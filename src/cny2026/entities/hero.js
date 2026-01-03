@@ -31,6 +31,12 @@ export default class Hero extends Creature {
 
     this.health = 3
     this.invulnerability = 0  // Invulnerability time
+
+    this._moveAcceleration = 0.8
+    this._moveDeceleration = 0.1
+    this._moveMaxSpeed = 8
+    this._pushDeceleration = 0.2
+    this._pushMaxSpeed = 32
   }
 
   /*
