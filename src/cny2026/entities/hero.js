@@ -1,5 +1,11 @@
 import Creature from '@avo/entity/types/creature.js'
-import { POINTER_STATES, FRAME_DURATION, LAYERS, DIRECTIONS } from '@avo/constants.js'
+import {
+  DIRECTIONS,
+  FRAME_DURATION,
+  LAYERS,
+  POINTER_STATES,
+  SHAPES,
+} from '@avo/constants.js'
 import { transformSpriteSheet } from '@avo/misc.js'
 
 const INVULNERABILITY_WINDOW = 3000
@@ -283,6 +289,62 @@ export default class Hero extends Creature {
   get pushDeceleration () {
     if (this.z > 0) return this._pushDeceleration / 2  // When jumping off the ground, it's harder to slow down 
     return this._pushDeceleration
+  }
+
+  doBounce (target, collisionCorrection) {
+    super.doBounce(target, collisionCorrection)
+    
+    // If this object isn't a movable solid, it can't bounce.
+    if (!(this.movable && this.solid)) return
+
+    if (  // this object is bouncing off an unmovable object
+      this.movable && this.solid
+      && !target.movable && target.solid
+    ) {
+      if (
+        this.shape === SHAPES.CIRCLE && target.shape === SHAPES.CIRCLE
+      ) {
+
+        // For circle + circle collisions, the collision correction already
+        // tells us the bounce direction.
+        const angle = Math.atan2(collisionCorrection.y - this.y, collisionCorrection.x - this.x)
+        const speed = Math.sqrt(this.moveX * this.moveX + this.moveY * this.moveY)
+
+        this.moveX = Math.cos(angle) * speed
+        this.moveY = Math.sin(angle) * speed
+
+      } else if (
+        this.shape === SHAPES.CIRCLE
+        && (target.shape === SHAPES.SQUARE || target.shape === SHAPES.POLYGON)
+      ) {
+
+        // For circle + polygon collisions, we need to know...
+        // - the original angle this circle was moving towards (or rather, its
+        //   reverse, because we want a bounce)
+        // - the normal vector (of the edge) of the polygon this circle collided
+        //   into (which we can get from the collision correction)
+        // - the angle between them
+        const reverseOriginalAngle = Math.atan2(-this.moveY, -this.moveX)
+        const normalAngle = Math.atan2(collisionCorrection.y - this.y, collisionCorrection.x - this.x)
+        const angleBetween = normalAngle - reverseOriginalAngle
+        const angle = reverseOriginalAngle + 2 * angleBetween
+
+        const speed = Math.sqrt(this.moveX * this.moveX + this.moveY * this.moveY)
+
+        this.moveX = Math.cos(angle) * speed
+        this.moveY = Math.sin(angle) * speed
+
+      } else {
+        // For the moment, we're not too concerned about polygons bumping into each other
+      }
+    } else if (  // this object is bouncing off another movable object
+      target.movable && target.solid
+      && collisionCorrection.moveX !== undefined
+      && collisionCorrection.moveY !== undefined
+    ) {
+      this.moveX = collisionCorrection.moveX
+      this.moveY = collisionCorrection.moveY
+    }
   }
 
   /*
