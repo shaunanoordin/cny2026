@@ -1,4 +1,18 @@
+/*
+Passenger
+A Passenger is an NPC that can be picked up by the Hero, to be delivered to a
+designated Drop Off Zone.
+
+Rules:
+- When the Hero doesn't already have an attached Passenger, and the Hero comes
+  within a certain radius of a Passenger, that Passenger gets attached to the
+  Hero.
+ */
+
+import { TILE_SIZE } from '@avo/constants.js'
 import Creature from '@avo/entity/types/creature.js'
+
+const PICKUP_RADIUS = TILE_SIZE * 2
 
 export default class Passenger extends Creature {
   constructor (app, col = 0, row = 0) {
@@ -19,6 +33,8 @@ export default class Passenger extends Creature {
     this.spriteOffsetX = -12
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
+
+    this.pickedUp = false
   }
 
   /*
@@ -28,10 +44,36 @@ export default class Passenger extends Creature {
 
   play () {
     super.play()
+
+    const app = this._app
+    const hero = app.hero
+
+    // Pick up this Passenger if Hero is nearby and available.
+    if (hero && !hero.passenger && !this.pickedUp) {
+      const distX = hero.x - this.x
+      const distY = hero.y - this.y
+      const dist = Math.sqrt(distY * distY + distX * distX)
+
+      console.log(dist)
+
+      if (dist <= PICKUP_RADIUS) {
+        hero.pickUp(this)
+      }
+    }
   }
 
   paint (layer = 0) {
     super.paint(layer)
     this.paintShadow(layer)
+  }
+
+  onPickUp (target) {
+    this.solid = false
+    this.pickedUp = true
+  }
+
+  onDrop () {
+    this.solid = true
+    this.pickedUp = false
   }
 }

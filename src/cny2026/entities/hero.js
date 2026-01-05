@@ -1,3 +1,9 @@
+/*
+Hero
+The Hero is a horse that goes around picking up Passengers and dropping them off
+at their destination Drop Off Zones.
+ */
+
 import Creature from '@avo/entity/types/creature.js'
 import {
   DIRECTIONS,
@@ -31,14 +37,18 @@ export default class Hero extends Creature {
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
 
-    this.health = 3
-    this.invulnerability = 0  // Invulnerability time
+    // this.health = 3
+    // this.invulnerability = 0  // Invulnerability time
 
+    // Physics: make the horse really fast and a bit hard to control.
     this._moveAcceleration = 0.8
     this._moveDeceleration = 0.1
     this._moveMaxSpeed = 8
     this._pushDeceleration = 0.2
     this._pushMaxSpeed = 32
+
+    // Gameplay
+    this.passenger = undefined
   }
 
   /*
@@ -56,6 +66,13 @@ export default class Hero extends Creature {
     // Count down invulnerability time
     if (this.invulnerability > 0) {
       this.invulnerability = Math.max(this.invulnerability - FRAME_DURATION, 0)
+    }
+
+    // If carrying a Passenger, the Passenger will be attached to the Hero.
+    const passenger = this.passenger
+    if (passenger) {
+      passenger.x = this.x
+      passenger.y = this.y + 2
     }
   }
 
@@ -253,6 +270,17 @@ export default class Hero extends Creature {
       name: 'idle',
       counter: 0,
     }
+  }
+
+  // Picks up a Passenger.
+  pickUp (passenger) {
+    this.passenger = passenger
+    this.passenger?.onPickUp()
+  }
+
+  // Drops off a Passenger.
+  dropOff (success = true) {
+    this.passenger?.onDrop(success)
   }
 
   /*
