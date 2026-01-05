@@ -3,6 +3,8 @@ import ImageAsset from '@avo/image-asset.js'
 import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
 
 import Hero from './entities/hero.js'
+import Passenger from './entities/passenger.js'
+import DropOffZone from './entities/drop-off-zone.js'
 
 import FloorTile from './tiles/floor-tile'
 import WallTile from './tiles/wall-tile.js'
@@ -14,7 +16,7 @@ export default class CNY2026 extends Story {
     super(app)
 
     this.assets = {
-      "hero": new ImageAsset('assets/avo-sprites-2024-08-samiel.png'),
+      // "hero": new ImageAsset('assets/avo-sprites-2024-08-samiel.png'),
       "map": new ImageAsset('assets/avo-sprites-2025-03-map-tiles.png'),
     }
   }
@@ -105,5 +107,9 @@ export default class CNY2026 extends Story {
     app.hero = app.addEntity(new Hero(app, 12, 12))
     app.hero.rotation = ROTATIONS.NORTH
     app.camera.target = app.hero
+
+    // Add other entities
+    app.addEntity(new Passenger(app, 15, 15))
+    app.addEntity(new DropOffZone(app, 9, 15))
   }
 }
