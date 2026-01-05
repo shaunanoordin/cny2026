@@ -6,7 +6,6 @@ import {
   POINTER_STATES,
   SHAPES,
 } from '@avo/constants.js'
-import { transformSpriteSheet } from '@avo/misc.js'
 
 const INVULNERABILITY_WINDOW = 3000
 const MOVE_ACTION_CYCLE_DURATION = 500
@@ -17,17 +16,14 @@ export default class Hero extends Creature {
     super(app)
     this._type = 'hero'
 
-    this.colour = '#000'
+    this.colour = '#c04040'
     this.col = col
     this.row = row
 
     this.intent = undefined
     this.action = undefined
 
-    this.spriteSheet = transformSpriteSheet(
-      app.assets['hero'].img,
-      transformPixelsFromRedToBlue  // Example
-    )
+    this.spriteSheet = undefined
     this.spriteSizeX = 24
     this.spriteSizeY = 24
     this.spriteScale = 2
@@ -66,17 +62,13 @@ export default class Hero extends Creature {
   paint (layer = 0) {
     const app = this._app
     const c2d = app.canvas2d
-    if (!this.spriteSheet) return
 
     if (this.invulnerability > 0) {  // If invulnerable, flash!
       const flash = Math.floor(this.invulnerability / 300) % 2
       if (flash === 1) return
     }
 
-    this.colour = (app.playerInput.pointerState === POINTER_STATES.POINTER_DOWN)
-      ? '#ff3333'
-      : '#c0a0a0'
-    // super.paint(layer)
+    super.paint(layer)
     this.paintShadow(layer)
 
     // Draw the VFX
