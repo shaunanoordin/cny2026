@@ -1,3 +1,18 @@
+/*
+Drop Off Zone
+A Drop Off Zone is the destination of a passenger.
+
+Rules:
+- When a Hero is carrying a matching Passenger (a matching Passenger is one
+  whose destination is this Drop Off Zone), that Passenger is dropped off
+  (detached from the Hero).
+- When a matching, non-carried Passenger touches the Drop Off Zone, that
+  Passenger is successfully added to the score.
+- The first rule will trigger the second rule on the next frame. However,
+  the second rule doesn't necessarily require the first rule - it's possible
+  to knock a passenger to their destination.
+ */
+
 import { TILE_SIZE } from '@avo/constants.js'
 import Entity from '@avo/entity/entity.js'
 
@@ -27,5 +42,22 @@ export default class DropOffZone extends Entity {
   paint (layer = 0) {
     super.paint(layer)
     this.paintShadow(layer)
+  }
+
+  onCollision (target, collisionCorrection) {
+    super.onCollision(target, collisionCorrection)
+    
+    const hero = this._app.hero
+
+    if (target === hero && hero?.passenger) {
+      hero.dropOff()
+    } else if (
+      target._type === 'passenger'
+      && !target.pickedUp
+      // TODO: also add destination check
+    ) {
+      console.log('HOORAY')
+      target._expired = true
+    }
   }
 }

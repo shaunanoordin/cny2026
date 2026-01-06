@@ -7,6 +7,7 @@ Rules:
 - When the Hero doesn't already have an attached Passenger, and the Hero comes
   within a certain radius of a Passenger, that Passenger gets attached to the
   Hero.
+- A Passenger has a destination Drop Off Zone.
  */
 
 import { TILE_SIZE } from '@avo/constants.js'
@@ -54,8 +55,6 @@ export default class Passenger extends Creature {
       const distY = hero.y - this.y
       const dist = Math.sqrt(distY * distY + distX * distX)
 
-      console.log(dist)
-
       if (dist <= PICKUP_RADIUS) {
         hero.pickUp(this)
       }
@@ -72,8 +71,8 @@ export default class Passenger extends Creature {
     this.pickedUp = true
   }
 
-  onDrop () {
-    this.solid = true
+  onDropOff () {
+    this.solid = false  // Keep Passenger un-solid to prevent additional collisions.
     this.pickedUp = false
   }
 }

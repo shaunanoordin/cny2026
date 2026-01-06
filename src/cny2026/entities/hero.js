@@ -279,8 +279,8 @@ export default class Hero extends Creature {
   }
 
   // Drops off a Passenger.
-  dropOff (success = true) {
-    this.passenger?.onDrop(success)
+  dropOff () {
+    this.passenger?.onDropOff()
   }
 
   /*
