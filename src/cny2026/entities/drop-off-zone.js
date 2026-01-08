@@ -13,7 +13,7 @@ Rules:
   to knock a passenger to their destination.
  */
 
-import { TILE_SIZE } from '@avo/constants.js'
+import { LAYERS, TILE_SIZE } from '@avo/constants.js'
 import Entity from '@avo/entity/entity.js'
 
 export default class DropOffZone extends Entity {
@@ -40,8 +40,20 @@ export default class DropOffZone extends Entity {
   }
 
   paint (layer = 0) {
-    super.paint(layer)
-    this.paintShadow(layer)
+    const app = this._app
+    const c2d = app.canvas2d
+
+    // Debug
+    if (layer === LAYERS.BOTTOM) {
+      app.applyCameraTransforms()
+
+      c2d.fillStyle = this.colour
+      c2d.beginPath()
+      c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
+      c2d.fill()
+
+      app.undoCameraTransforms()
+    }
   }
 
   onCollision (target, collisionCorrection) {

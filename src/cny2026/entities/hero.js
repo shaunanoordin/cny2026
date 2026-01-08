@@ -85,30 +85,29 @@ export default class Hero extends Creature {
       if (flash === 1) return
     }
 
-    super.paint(layer)
-    this.paintShadow(layer)
+    // this.paintShadow(layer)
 
-    // Draw the VFX
-    if (layer === LAYERS.MIDDLE && this.action?.name === 'charging') {
+    // Debug
+    if (layer === LAYERS.MIDDLE) {
       app.applyCameraTransforms()
 
-      const minRadius = this.size * 0.5
-      const maxRadius = this.size * 1
-      const range = maxRadius - minRadius
-      const ratio = (this.action?.counter || 0) / MAX_CHARGING_POWER
-      const radius = minRadius + range * ratio / 2
-
-      c2d.strokeStyle = '#ff3'
-      c2d.lineWidth = (radius - minRadius) * 2
-      c2d.beginPath()
-      c2d.arc(this.x, this.y, radius, 0, 2 * Math.PI)
-      c2d.stroke()
-
-      c2d.strokeStyle = '#f33'
+      c2d.fillStyle = this.colour
+      c2d.strokeStyle = '#404040'
       c2d.lineWidth = 2
       c2d.beginPath()
-      c2d.arc(this.x, this.y, maxRadius, 0, 2 * Math.PI)
-      c2d.stroke()
+      c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
+      c2d.fill()
+      this.solid && c2d.stroke()
+
+      const passenger = this.passenger
+      if (passenger) {
+        c2d.fillStyle = passenger.colour
+        c2d.lineWidth = 1
+        c2d.beginPath()
+        c2d.arc(this.x, this.y - 1, passenger.size / 2.5, 0, 2 * Math.PI)
+        c2d.fill()
+        this.solid && c2d.stroke()
+      }
 
       app.undoCameraTransforms()
     }
