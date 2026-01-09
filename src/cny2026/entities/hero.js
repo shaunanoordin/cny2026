@@ -72,7 +72,7 @@ export default class Hero extends Creature {
     const passenger = this.passenger
     if (passenger) {
       passenger.x = this.x
-      passenger.y = this.y + 2
+      passenger.y = this.y
     }
   }
 
@@ -84,8 +84,6 @@ export default class Hero extends Creature {
       const flash = Math.floor(this.invulnerability / 300) % 2
       if (flash === 1) return
     }
-
-    // this.paintShadow(layer)
 
     // Debug
     if (layer === LAYERS.MIDDLE) {
@@ -99,18 +97,10 @@ export default class Hero extends Creature {
       c2d.fill()
       this.solid && c2d.stroke()
 
-      const passenger = this.passenger
-      if (passenger) {
-        c2d.fillStyle = passenger.colour
-        c2d.lineWidth = 1
-        c2d.beginPath()
-        c2d.arc(this.x, this.y - 1, passenger.size / 2.5, 0, 2 * Math.PI)
-        c2d.fill()
-        this.solid && c2d.stroke()
-      }
-
       app.undoCameraTransforms()
     }
+
+    // this.paintShadow(layer)
 
     // Draw the sprite
     if (layer === LAYERS.MIDDLE) {
@@ -280,6 +270,7 @@ export default class Hero extends Creature {
   // Drops off a Passenger.
   dropOff () {
     this.passenger?.onDropOff()
+    this.passenger = undefined
   }
 
   /*

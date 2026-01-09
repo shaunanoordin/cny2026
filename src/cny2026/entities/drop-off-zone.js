@@ -62,14 +62,19 @@ export default class DropOffZone extends Entity {
     const hero = this._app.hero
 
     if (target === hero && hero?.passenger) {
+      hero.passenger.x = this.x
+      hero.passenger.y = this.y
       hero.dropOff()
+
     } else if (
       target._type === 'passenger'
       && !target.pickedUp
+      && !target.destinationReached
       // TODO: also add destination check
     ) {
-      console.log('HOORAY')
-      target._expired = true
+      target.x = this.x
+      target.y = this.y
+      target.onDestinationReached()
     }
   }
 }

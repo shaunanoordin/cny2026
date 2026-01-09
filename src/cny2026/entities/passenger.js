@@ -8,12 +8,16 @@ Rules:
   within a certain radius of a Passenger, that Passenger gets attached to the
   Hero.
 - A Passenger has a destination Drop Off Zone.
+- A Passenger that has reached their destination is marked as "successfully
+  dropped off", and will disappear after a short while.
  */
 
 import { LAYERS, TILE_SIZE } from '@avo/constants.js'
 import Creature from '@avo/entity/types/creature.js'
 
 const PICKUP_RADIUS = TILE_SIZE * 2
+const PICKUP_COOLDOWN_DURATION = 60
+const EXPIRY_DURATION = 60
 
 export default class Passenger extends Creature {
   constructor (app, col = 0, row = 0) {
@@ -35,7 +39,10 @@ export default class Passenger extends Creature {
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
 
-    this.pickedUp = false
+    this.pickedUp = false  // Indicates if a passenger is picked up by the hero.
+    this.pickUpCooldown = 0  // Once a passenger is dropped, it can't be picked up for a while.
+    this.destinationReached = false  // Once the destination has been reached, 
+    this.expiryCountdown = 0
   }
 
   /*
@@ -49,8 +56,17 @@ export default class Passenger extends Creature {
     const app = this._app
     const hero = app.hero
 
+    // If Passenger has reached their destination, they're free to disappear.
+    if (this.destinationReached) {
+      this.expiryCountdown--
+      if (this.expiryCountdown <= 0) { this._expired = true }
+      return
+    }
+
     // Pick up this Passenger if Hero is nearby and available.
-    if (hero && !hero.passenger && !this.pickedUp) {
+    if (this.pickUpCooldown > 0) {
+      this.pickUpCooldown--
+    } else if (hero && !hero.passenger && !this.pickedUp) {
       const distX = hero.x - this.x
       const distY = hero.y - this.y
       const dist = Math.sqrt(distY * distY + distX * distX)
@@ -66,7 +82,10 @@ export default class Passenger extends Creature {
     const c2d = app.canvas2d
 
     // Debug
-    if (!this.pickedUp && layer === LAYERS.MIDDLE) {
+    if (
+      (!this.pickedUp && layer === LAYERS.MIDDLE)
+      || (this.pickedUp && layer === LAYERS.TOP)
+    ) {
       app.applyCameraTransforms()
 
       c2d.fillStyle = this.colour
@@ -77,16 +96,6 @@ export default class Passenger extends Creature {
       c2d.fill()
       this.solid && c2d.stroke()
 
-      const passenger = this.passenger
-      if (passenger) {
-        c2d.fillStyle = passenger.colour
-        c2d.lineWidth = 1
-        c2d.beginPath()
-        c2d.arc(this.x, this.y - 1, passenger.size / 2.5, 0, 2 * Math.PI)
-        c2d.fill()
-        this.solid && c2d.stroke()
-      }
-
       app.undoCameraTransforms()
     }
   }
@@ -94,10 +103,19 @@ export default class Passenger extends Creature {
   onPickUp (target) {
     this.solid = false
     this.pickedUp = true
+    this.size = TILE_SIZE - 4
   }
 
   onDropOff () {
-    this.solid = false  // Keep Passenger un-solid to prevent additional collisions.
+    // this.solid = false  // Keep Passenger un-solid to prevent additional collisions.
     this.pickedUp = false
+    this.size = TILE_SIZE
+    this.pickUpCooldown = PICKUP_COOLDOWN_DURATION
+  }
+
+  onDestinationReached () {
+    if (this.destinationReached) return
+    this.destinationReached = true
+    this.expiryCountdown = EXPIRY_DURATION
   }
 }
