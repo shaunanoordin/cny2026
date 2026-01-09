@@ -111,5 +111,6 @@ export default class CNY2026 extends Story {
     // Add other entities
     app.addEntity(new Passenger(app, 15, 15))
     app.addEntity(new DropOffZone(app, 9, 15))
+    app.addEntity(new DropOffZone(app, 9, 9))
   }
 }
