@@ -3,7 +3,6 @@ import ImageAsset from '@avo/image-asset.js'
 import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
 
 import Hero from './entities/hero.js'
-import Passenger from './entities/passenger.js'
 import DropOffZone from './entities/drop-off-zone.js'
 import SpawnZone from './entities/spawn-zone.js'
 
@@ -11,6 +10,7 @@ import FloorTile from './tiles/floor-tile'
 import WallTile from './tiles/wall-tile.js'
 
 import PlayerControls from './rules/player-controls.js'
+import CNY2026GameManager from './rules/cny2026-game-manager.js'
 
 export default class CNY2026 extends Story {
   constructor (app) {
@@ -28,9 +28,11 @@ export default class CNY2026 extends Story {
   }
 
   load_first_scene () {
+    super.reset()
     const app = this._app
-
+    
     // Setup rules
+    app.addRule(new CNY2026GameManager(app))
     app.addRule(new PlayerControls(app))
 
     // Setup map

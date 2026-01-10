@@ -1,10 +1,21 @@
+/*
+Player Controls
+Standard player controls for top-down adventure games.
+
+Keyboard controls:
+- Up/down/left/right keys moves the Hero around the map.
+
+Touch controls:
+- Drag action moves the Hero around the map.
+  - The initial touch/start of drag acts as a "base".
+  - The direction of the Hero's movement is determined by the current position
+    of the touch/cursor relative to the base.
+ */
+
 import Rule from '@avo/rule'
 import Physics from '@avo/physics.js'
 import { LAYERS, POINTER_DEADZONE_RADIUS, POINTER_STATES, TILE_SIZE } from '@avo/constants.js'
 
-/*
-Standard player controls for top-down adventure games.
- */
 export default class PlayerControls extends Rule {
   constructor (app) {
     super(app)
