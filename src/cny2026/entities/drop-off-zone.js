@@ -29,6 +29,7 @@ export default class DropOffZone extends Entity {
 
     this.size = TILE_SIZE * 2
     this.solid = false
+    this.movable = false
 
     // Dynamically determine the ID and label of this DropOffZone.
     this.id = 0
@@ -42,10 +43,6 @@ export default class DropOffZone extends Entity {
   Section: General Logic
   ----------------------------------------------------------------------------
    */
-
-  play() {
-    super.play()
-  }
 
   paint(layer = 0) {
     const app = this._app

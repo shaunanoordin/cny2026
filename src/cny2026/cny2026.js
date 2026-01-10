@@ -5,6 +5,7 @@ import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
 import Hero from './entities/hero.js'
 import Passenger from './entities/passenger.js'
 import DropOffZone from './entities/drop-off-zone.js'
+import SpawnZone from './entities/spawn-zone.js'
 
 import FloorTile from './tiles/floor-tile'
 import WallTile from './tiles/wall-tile.js'
@@ -109,8 +110,13 @@ export default class CNY2026 extends Story {
     app.camera.target = app.hero
 
     // Add other entities
-    app.addEntity(new Passenger(app, 15, 15))
+    app.addEntity(new SpawnZone(app, 15, 15))
+    app.addEntity(new SpawnZone(app, 15, 9))
     app.addEntity(new DropOffZone(app, 9, 15))
     app.addEntity(new DropOffZone(app, 9, 9))
+
+    app.entities
+    .filter(entity => entity._type === 'spawn-zone')
+    .forEach(spawnZone => spawnZone.spawnPassenger())
   }
 }
