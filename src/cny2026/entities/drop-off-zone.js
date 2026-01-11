@@ -74,7 +74,11 @@ export default class DropOffZone extends Entity {
 
     const hero = this._app.hero
 
-    if (target === hero && hero?.passenger) {
+    if (
+      target === hero
+      && hero?.passenger
+      && hero?.passenger.destination === this.id
+    ) {
       hero.passenger.x = this.x
       hero.passenger.y = this.y
       hero.dropOff()
@@ -83,7 +87,7 @@ export default class DropOffZone extends Entity {
       target._type === 'passenger'
       && !target.pickedUp
       && !target.destinationReached
-      // TODO: also add destination check
+      && target.destination === this.id
     ) {
       target.x = this.x
       target.y = this.y

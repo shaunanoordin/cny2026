@@ -49,8 +49,9 @@ export default class Passenger extends Creature {
     this.label = ''
     const dropOffZones = app.entities.filter(entity => entity._type === 'drop-off-zone')
     if (dropOffZones.length > 1) {
-      this.destination = Math.floor(Math.random() * dropOffZones.length)
-      this.label = dropOffZones[this.destination].label
+      const randomIndex = Math.floor(Math.random() * dropOffZones.length)
+      this.destination = dropOffZones[randomIndex].id
+      this.label = dropOffZones[randomIndex].label
     }
   }
 

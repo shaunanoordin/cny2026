@@ -262,13 +262,14 @@ export default class Hero extends Creature {
   }
 
   // Picks up a Passenger.
-  // Triggered by the Passenger, not by the Hero.
+  // Triggered by nearby Passengers, not by the Hero.
   pickUp (passenger) {
     this.passenger = passenger
     this.passenger?.onPickUp()
   }
 
   // Drops off a Passenger.
+  // Triggered by DropOffZones, not by the Hero.
   dropOff () {
     this.passenger?.onDropOff()
     this.passenger = undefined

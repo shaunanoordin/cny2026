@@ -15,7 +15,7 @@ Rules:
  */
 
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
-const TIME_TO_SPAWN = 5 * 60
+const TIME_TO_SPAWN = 1 * 60
 
 import Rule from '@avo/rule'
 
