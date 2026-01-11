@@ -109,14 +109,9 @@ export default class PlayerControls extends Rule {
   }
 
   paint (layer = 0) {
-    const hero = this._app.hero
-
     if (layer === LAYERS.OVERLAY) {
       this.paintUIData()
       this.paintPointerInput()
-
-    } else if (layer === LAYERS.BOTTOM) {
-      this.paintLineOfSight(hero)
     }
   }
   

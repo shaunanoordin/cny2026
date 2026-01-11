@@ -18,6 +18,7 @@ const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
 
 import Rule from '@avo/rule'
+import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 
 export default class CNY2026GameManager extends Rule {
   constructor (app) {
@@ -40,6 +41,41 @@ export default class CNY2026GameManager extends Rule {
       this.spawnTimer = 0
     }
   }
+
+  paint (layer = 0) {
+      if (layer === LAYERS.OVERLAY) {
+        this.paintUIData()
+      }
+    }
+    
+    /*
+    Draw UI data, such as Hero health.
+     */
+    paintUIData () {
+      const c2d = this._app.canvas2d
+      
+      const X_OFFSET = TILE_SIZE * 1.5
+      const Y_OFFSET = TILE_SIZE * -1.0
+      const LEFT = X_OFFSET
+      const RIGHT = this._app.canvasWidth - X_OFFSET
+      const TOP = -Y_OFFSET
+      const BOTTOM = this._app.canvasHeight + Y_OFFSET
+      c2d.font = '2em monospace'
+      c2d.textBaseline = 'middle'
+      c2d.lineWidth = 8
+  
+      // Paint timer
+      const currentTime = this.gameTimer
+      const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
+      const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
+      const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
+      const timeText = timeInSeconds + '.' + textInMilliseconds
+      c2d.textAlign = 'right'
+      c2d.strokeStyle = '#fff'
+      c2d.strokeText(timeText, RIGHT, TOP)
+      c2d.fillStyle = '#c04040'
+      c2d.fillText(timeText, RIGHT, TOP)
+    }
 
   // Checks if there are enough Passengers in the game. If not, create one.
   populatePassengers () {
