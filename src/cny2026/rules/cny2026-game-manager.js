@@ -14,8 +14,8 @@ Rules:
 - Timed Game: when the game timer runs out, the game is over.
  */
 
-const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 2
-const SPAWN_TIMER = 5 * 60
+const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
+const TIME_TO_SPAWN = 5 * 60
 
 import Rule from '@avo/rule'
 
@@ -26,13 +26,40 @@ export default class CNY2026GameManager extends Rule {
 
     this.targetNumberOfPassengers = DEFAULT_TARGET_NUMBER_OF_PASSENGERS
     this.gameTimer = 0
+    this.spawnTimer = 0
   }
 
   deconstructor () {}
 
   play () {
-    console.log('+++')
     this.gameTimer++
+    this.spawnTimer++
+
+    if (this.spawnTimer >= TIME_TO_SPAWN) {
+      this.populatePassengers()
+      this.spawnTimer = 0
+    }
+  }
+
+  // Checks if there are enough Passengers in the game. If not, create one.
+  populatePassengers () {
+    console.log('+++ populatePassengers')
+    const app = this._app
+    const passengers = app.entities.filter(entity => entity._type === 'passenger')
+
+    if (passengers.length < DEFAULT_TARGET_NUMBER_OF_PASSENGERS) {
+
+      // Find a spawn zone that isn't currently occupied by an existing Passenger
+      const spawnZones = app.entities.filter(entity => entity._type === 'spawn-zone')
+      const spawnZonesWithNoNearbyPassengers = spawnZones.filter(spawnZone =>
+        true || spawnZone.getNearbyPassengers().length === 0
+      )
+
+      if (spawnZonesWithNoNearbyPassengers.length > 0) {
+        const randomIndex = Math.floor(Math.random() * spawnZonesWithNoNearbyPassengers.length)
+        spawnZonesWithNoNearbyPassengers[randomIndex].spawnPassenger()
+      }
+    }
   }
 
   endGame () {}

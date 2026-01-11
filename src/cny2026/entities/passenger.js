@@ -101,12 +101,14 @@ export default class Passenger extends Creature {
   }
 
   onPickUp (target) {
+    if (this.destinationReached) return
     this.solid = false
     this.pickedUp = true
     this.size = TILE_SIZE - 4
   }
 
   onDropOff () {
+    if (this.destinationReached) return
     // this.solid = false  // Keep Passenger un-solid to prevent additional collisions.
     this.pickedUp = false
     this.size = TILE_SIZE
@@ -115,6 +117,7 @@ export default class Passenger extends Creature {
 
   onDestinationReached () {
     if (this.destinationReached) return
+    this.solid = false
     this.destinationReached = true
     this.expiryCountdown = EXPIRY_DURATION
   }

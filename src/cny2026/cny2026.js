@@ -117,8 +117,6 @@ export default class CNY2026 extends Story {
     app.addEntity(new DropOffZone(app, 9, 15))
     app.addEntity(new DropOffZone(app, 9, 9))
 
-    app.entities
-    .filter(entity => entity._type === 'spawn-zone')
-    .forEach(spawnZone => spawnZone.spawnPassenger())
+    app.rules.get('cny2026-game-manager').populatePassengers()
   }
 }

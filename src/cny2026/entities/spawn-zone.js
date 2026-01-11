@@ -68,8 +68,8 @@ export default class DropOffZone extends Entity {
     app.addEntity(new Passenger(app, this.col, this.row))
   }
 
-  // Check if there are Passengers near this SpawnZone.
-  checkForNearbyPassengers () {
+  // Check for Passengers near this SpawnZone.
+  getNearbyPassengers () {
     const app = this._app
     return app.entities.filter(entity => {
       if (entity._type !== 'passenger') return false
