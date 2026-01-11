@@ -37,6 +37,8 @@ export default class Hero extends Creature {
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
 
+    this.mass = 10
+    
     // this.health = 3
     // this.invulnerability = 0  // Invulnerability time
 
