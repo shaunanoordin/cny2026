@@ -52,7 +52,7 @@ export default class CNY2026GameManager extends Rule {
       // Find a spawn zone that isn't currently occupied by an existing Passenger
       const spawnZones = app.entities.filter(entity => entity._type === 'spawn-zone')
       const spawnZonesWithNoNearbyPassengers = spawnZones.filter(spawnZone =>
-        true || spawnZone.getNearbyPassengers().length === 0
+        spawnZone.getNearbyPassengers().length === 0
       )
 
       if (spawnZonesWithNoNearbyPassengers.length > 0) {
