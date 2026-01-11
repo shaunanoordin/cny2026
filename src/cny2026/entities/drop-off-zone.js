@@ -52,11 +52,13 @@ export default class DropOffZone extends Entity {
     if (layer === LAYERS.BOTTOM) {
       app.applyCameraTransforms()
 
+      // Paint zone
       c2d.fillStyle = this.colour
       c2d.beginPath()
       c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
       c2d.fill()
 
+      // Paint label
       c2d.font = `32px monospace`
       c2d.fillStyle = '#ffffff'
       c2d.textBaseline = 'middle'

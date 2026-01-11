@@ -43,6 +43,15 @@ export default class Passenger extends Creature {
     this.pickUpCooldown = 0  // Once a passenger is dropped, it can't be picked up for a while.
     this.destinationReached = false  // Once the destination has been reached, 
     this.expiryCountdown = 0
+
+    // Dynamically determine the destination DropOffZone of this passenger.
+    this.destination = 0
+    this.label = ''
+    const dropOffZones = app.entities.filter(entity => entity._type === 'drop-off-zone')
+    if (dropOffZones.length > 1) {
+      this.destination = Math.floor(Math.random() * dropOffZones.length)
+      this.label = dropOffZones[this.destination].label
+    }
   }
 
   /*
@@ -88,6 +97,7 @@ export default class Passenger extends Creature {
     ) {
       app.applyCameraTransforms()
 
+      // Paint shape
       c2d.fillStyle = this.colour
       c2d.strokeStyle = '#404040'
       c2d.lineWidth = 2
@@ -95,6 +105,13 @@ export default class Passenger extends Creature {
       c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
       c2d.fill()
       this.solid && c2d.stroke()
+
+      // Paint label
+      c2d.font = `24px monospace`
+      c2d.fillStyle = '#ffffff'
+      c2d.textBaseline = 'middle'
+      c2d.textAlign = 'center'
+      c2d.fillText(this.label, this.x, this.y)
 
       app.undoCameraTransforms()
     }
