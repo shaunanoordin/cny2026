@@ -159,4 +159,23 @@ table {
     top: 3.5em;
     left: 0.5em;
   }
+
+  #button-sound {
+    top: 3.5em;
+    right: 0.5em;
+    background: $white;
+    padding: 0.2em 0.75em;
+
+    &[data-muted=true]::before {
+      font-size: 1.2em;
+    }
+
+    &[data-muted=true]::before {
+      content: '🔇';
+    }
+
+    &[data-muted=false]::before {
+      content: '🔈'
+    }
+  }
 }

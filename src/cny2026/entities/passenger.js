@@ -118,11 +118,13 @@ export default class Passenger extends Creature {
     }
   }
 
-  onPickUp (target) {
+  onPickUp () {
     if (this.destinationReached) return
     this.solid = false
     this.pickedUp = true
     this.size = TILE_SIZE - 4
+
+    this._app.rules.get('sound-manager').playPickUp()
   }
 
   onDropOff () {
@@ -131,6 +133,8 @@ export default class Passenger extends Creature {
     this.pickedUp = false
     this.size = TILE_SIZE
     this.pickUpCooldown = PICKUP_COOLDOWN_DURATION
+
+    this._app.rules.get('sound-manager').playDropOff()
   }
 
   onDestinationReached () {
@@ -138,5 +142,7 @@ export default class Passenger extends Creature {
     this.solid = false
     this.destinationReached = true
     this.expiryCountdown = EXPIRY_DURATION
+
+    this._app.rules.get('sound-manager').playDestinationReached()
   }
 }

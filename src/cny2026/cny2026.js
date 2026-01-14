@@ -11,6 +11,7 @@ import WallTile from './tiles/wall-tile.js'
 
 import PlayerControls from './rules/player-controls.js'
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
+import SoundManager from './rules/sound-manager.js'
 
 export default class CNY2026 extends Story {
   constructor (app) {
@@ -34,6 +35,7 @@ export default class CNY2026 extends Story {
     // Setup rules
     app.addRule(new CNY2026GameManager(app))
     app.addRule(new PlayerControls(app))
+    app.addRule(new SoundManager(app))
 
     // Setup map
     app.gameMap.tiles = []

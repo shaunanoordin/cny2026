@@ -79,7 +79,6 @@ export default class CNY2026GameManager extends Rule {
 
   // Checks if there are enough Passengers in the game. If not, create one.
   populatePassengers () {
-    console.log('+++ populatePassengers')
     const app = this._app
     const passengers = app.entities.filter(entity => entity._type === 'passenger')
 
