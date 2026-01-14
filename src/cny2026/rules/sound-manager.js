@@ -11,6 +11,7 @@ export default class SoundManager extends Rule {
   constructor (app) {
     super(app)
     this._type = 'sound-manager'
+    this.muted = true
 
     this.pickUpSound = new Howl({
       src: ['assets/sound-pick-up.wav']
@@ -28,14 +29,17 @@ export default class SoundManager extends Rule {
   deconstructor () {}
 
   playPickUp () {
+    if (this.muted) return
     this.pickUpSound.play()
   }
 
   playDropOff () {
+    if (this.muted) return
     // this.dropOffSound.play()
   }
 
   playDestinationReached () {
+    if (this.muted) return
     // this.dropOffSound.stop()
     this.destinationReachedSound.play()
   }
