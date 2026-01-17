@@ -28,12 +28,12 @@ import SpawnZone from '../entities/spawn-zone.js'
 import FloorTile from '../tiles/floor-tile'
 import WallTile from '../tiles/wall-tile.js'
 
-export default function convertImageToGameMap (
+export default function generateGameMapFromImage (
   app,
   image,
 ) {
   if (!app || !image) {
-    console.error('convertImageToGameMap(): missing inputs')
+    console.error('generateGameMapFromImage(): missing inputs')
     return false
   }
 
@@ -109,7 +109,7 @@ export default function convertImageToGameMap (
     app.gameMap = gameMap
     
   } catch (err) {
-    console.error('convertImageToGameMap(): ', err)
+    console.error('generateGameMapFromImage(): ', err)
     return false
   }
 

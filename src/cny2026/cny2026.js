@@ -13,7 +13,7 @@ import PlayerControls from './rules/player-controls.js'
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
 import SoundManager from './rules/sound-manager.js'
 
-import convertImageToGameMap from './misc/convertImageToMap.js'
+import generateGameMapFromImage from './misc/generateGameMapFromImage.js'
 
 export default class CNY2026 extends Story {
   constructor (app) {
@@ -136,7 +136,7 @@ export default class CNY2026 extends Story {
     app.addRule(new SoundManager(app))
 
     // Setup map
-    convertImageToGameMap(app, app.assets['map-layout-00'].img)
+    generateGameMapFromImage(app, app.assets['map-layout-00'].img)
 
     app.rules.get('cny2026-game-manager').populatePassengers()
   }
