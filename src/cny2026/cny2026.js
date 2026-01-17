@@ -13,13 +13,16 @@ import PlayerControls from './rules/player-controls.js'
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
 import SoundManager from './rules/sound-manager.js'
 
+import convertImageToGameMap from './misc/convertImageToMap.js'
+
 export default class CNY2026 extends Story {
   constructor (app) {
     super(app)
 
     this.assets = {
-      // "hero": new ImageAsset('assets/avo-sprites-2024-08-samiel.png'),
-      "map": new ImageAsset('assets/avo-sprites-2025-03-map-tiles.png'),
+      // 'hero': new ImageAsset('assets/avo-sprites-2024-08-samiel.png'),
+      'map': new ImageAsset('assets/avo-sprites-2025-03-map-tiles.png'),
+      'map-layout-00': new ImageAsset('assets/cny2026-map-00-debug.png'),
     }
   }
 
@@ -133,9 +136,7 @@ export default class CNY2026 extends Story {
     app.addRule(new SoundManager(app))
 
     // Setup map
-    app.gameMap.tiles = []
-    app.gameMap.width = 25
-    app.gameMap.height = 25
+    convertImageToGameMap(app, app.assets['map-layout-00'].img)
 
     // Add Hero
     app.hero = app.addEntity(new Hero(app, 12, 12))
@@ -144,9 +145,9 @@ export default class CNY2026 extends Story {
 
     // Add other entities
     app.addEntity(new SpawnZone(app, 15, 15))
-    app.addEntity(new SpawnZone(app, 15, 9))
+    //app.addEntity(new SpawnZone(app, 15, 9))
     app.addEntity(new DropOffZone(app, 9, 15))
-    app.addEntity(new DropOffZone(app, 9, 9))
+    //app.addEntity(new DropOffZone(app, 9, 9))
 
     app.rules.get('cny2026-game-manager').populatePassengers()
   }
