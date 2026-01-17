@@ -25,10 +25,11 @@ export default class CNY2026 extends Story {
 
   start () {
     super.start()
-    this.load_first_scene()
+    // this.load_tutorial_scene()
+    this.load_debug_scene()
   }
 
-  load_first_scene () {
+  load_tutorial_scene () {
     super.reset()
     const app = this._app
     
@@ -107,6 +108,34 @@ export default class CNY2026 extends Story {
         }
       }
     }
+
+    // Add Hero
+    app.hero = app.addEntity(new Hero(app, 12, 12))
+    app.hero.rotation = ROTATIONS.NORTH
+    app.camera.target = app.hero
+
+    // Add other entities
+    app.addEntity(new SpawnZone(app, 15, 15))
+    app.addEntity(new SpawnZone(app, 15, 9))
+    app.addEntity(new DropOffZone(app, 9, 15))
+    app.addEntity(new DropOffZone(app, 9, 9))
+
+    app.rules.get('cny2026-game-manager').populatePassengers()
+  }
+
+  load_debug_scene () {
+    super.reset()
+    const app = this._app
+    
+    // Setup rules
+    app.addRule(new CNY2026GameManager(app))
+    app.addRule(new PlayerControls(app))
+    app.addRule(new SoundManager(app))
+
+    // Setup map
+    app.gameMap.tiles = []
+    app.gameMap.width = 25
+    app.gameMap.height = 25
 
     // Add Hero
     app.hero = app.addEntity(new Hero(app, 12, 12))
