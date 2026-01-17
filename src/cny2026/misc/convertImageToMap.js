@@ -76,27 +76,28 @@ export default function convertImageToGameMap (
       } else {
         tile = new FloorTile(app, col, row)
       }
+      gameMap.tiles[row].push(tile)
 
       // Are there any Entities on this map tile?
       // Note: entities are always placed on a FloorTile.
       if (r === 255 && g === 0 && b === 0) {
 
+        // Entity: Hero
         app.hero = app.addEntity(new Hero(app, col, row))
         app.hero.rotation = ROTATIONS.NORTH
         app.camera.target = app.hero
 
       } else if (r === 0 && g === 255 && b === 0) {
 
+        // Entity: Spawn Zone
         app.addEntity(new SpawnZone(app, col, row))
 
       } else if (r === 0 && g === 0 && b === 255) {
 
+        // Entity: DropOffZone
         app.addEntity(new DropOffZone(app, col, row))
 
       }
-
-      gameMap.tiles[row].push(tile)
-
     }
 
     // Update the game map data.
