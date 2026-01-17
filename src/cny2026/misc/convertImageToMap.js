@@ -17,6 +17,12 @@ alternative to making a dedicated map editor.
 - The conversion/transformation from pixel to Tile/Entity is hardcoded for now.
  */
 
+import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
+
+import Hero from '../entities/hero.js'
+import DropOffZone from '../entities/drop-off-zone.js'
+import SpawnZone from '../entities/spawn-zone.js'
+
 import FloorTile from '../tiles/floor-tile'
 import WallTile from '../tiles/wall-tile.js'
 
@@ -70,8 +76,27 @@ export default function convertImageToGameMap (
       } else {
         tile = new FloorTile(app, col, row)
       }
+
+      // Are there any Entities on this map tile?
+      // Note: entities are always placed on a FloorTile.
+      if (r === 255 && g === 0 && b === 0) {
+
+        app.hero = app.addEntity(new Hero(app, col, row))
+        app.hero.rotation = ROTATIONS.NORTH
+        app.camera.target = app.hero
+
+      } else if (r === 0 && g === 255 && b === 0) {
+
+        app.addEntity(new SpawnZone(app, col, row))
+
+      } else if (r === 0 && g === 0 && b === 255) {
+
+        app.addEntity(new DropOffZone(app, col, row))
+
+      }
+
       gameMap.tiles[row].push(tile)
-      
+
     }
 
     // Update the game map data.

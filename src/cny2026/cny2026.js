@@ -138,17 +138,6 @@ export default class CNY2026 extends Story {
     // Setup map
     convertImageToGameMap(app, app.assets['map-layout-00'].img)
 
-    // Add Hero
-    app.hero = app.addEntity(new Hero(app, 12, 12))
-    app.hero.rotation = ROTATIONS.NORTH
-    app.camera.target = app.hero
-
-    // Add other entities
-    app.addEntity(new SpawnZone(app, 15, 15))
-    //app.addEntity(new SpawnZone(app, 15, 9))
-    app.addEntity(new DropOffZone(app, 9, 15))
-    //app.addEntity(new DropOffZone(app, 9, 9))
-
     app.rules.get('cny2026-game-manager').populatePassengers()
   }
 }
