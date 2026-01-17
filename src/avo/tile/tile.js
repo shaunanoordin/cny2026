@@ -113,19 +113,20 @@ export default class Tile {
   This function is usually used to see if a map tile should be "contiguous" with
   its neighbours.
    */
-  checkSimilarAdjacencies () {
+  checkSimilarAdjacencies (gameMap = undefined) {
     let adjacencies = 0
 
-    if (this.getAdjacentTile(TILE_ADJACENCIES.NORTH)?._type === this._type) adjacencies += TILE_ADJACENCIES.NORTH
-    if (this.getAdjacentTile(TILE_ADJACENCIES.EAST)?._type === this._type) adjacencies += TILE_ADJACENCIES.EAST
-    if (this.getAdjacentTile(TILE_ADJACENCIES.SOUTH)?._type === this._type) adjacencies += TILE_ADJACENCIES.SOUTH
-    if (this.getAdjacentTile(TILE_ADJACENCIES.WEST)?._type === this._type) adjacencies += TILE_ADJACENCIES.WEST
+    if (this.getAdjacentTile(TILE_ADJACENCIES.NORTH, gameMap)?._type === this._type) adjacencies += TILE_ADJACENCIES.NORTH
+    if (this.getAdjacentTile(TILE_ADJACENCIES.EAST, gameMap)?._type === this._type) adjacencies += TILE_ADJACENCIES.EAST
+    if (this.getAdjacentTile(TILE_ADJACENCIES.SOUTH, gameMap)?._type === this._type) adjacencies += TILE_ADJACENCIES.SOUTH
+    if (this.getAdjacentTile(TILE_ADJACENCIES.WEST, gameMap)?._type === this._type) adjacencies += TILE_ADJACENCIES.WEST
 
     return adjacencies
   }
 
-  getAdjacentTile (adjacencyDirection) {
+  getAdjacentTile (adjacencyDirection, gameMap = undefined) {
     if (!adjacencyDirection) return null
+    const _gameMap = gameMap || this._app.gameMap
     let colOffset = 0, rowOffset = 0
 
     switch (adjacencyDirection) {
@@ -136,7 +137,7 @@ export default class Tile {
     }
     if (rowOffset === 0 && colOffset === 0) return null
 
-    return this._app.gameMap.tiles?.[this.row + rowOffset]?.[this.col + colOffset]
+    return _gameMap?.tiles?.[this.row + rowOffset]?.[this.col + colOffset]
   }
 
   /*
