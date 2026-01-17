@@ -17,7 +17,9 @@ alternative to making a dedicated map editor.
 - The conversion/transformation from pixel to Tile/Entity is hardcoded for now.
  */
 
-import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
+import { ROTATIONS } from '@avo/constants.js'
+
+import prettifyMapTiles from './prettifyMapTiles.js'
 
 import Hero from '../entities/hero.js'
 import DropOffZone from '../entities/drop-off-zone.js'
@@ -103,8 +105,9 @@ export default function convertImageToGameMap (
     // Update the game map data.
     gameMap.width = width
     gameMap.height = height
+    prettifyMapTiles(gameMap)
     app.gameMap = gameMap
-
+    
   } catch (err) {
     console.error('convertImageToGameMap(): ', err)
     return false
