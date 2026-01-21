@@ -135,7 +135,7 @@ export default class PlayerControls extends Rule {
     c2d.fillText(text, LEFT, BOTTOM)
 
     if (hero?.action?.name === 'idle' || hero?.action?.name === 'move') {
-      text = hero?.action?.name + ' (' + hero?.moveSpeed.toFixed(2) + ')'
+      text = hero?.action?.name + ' (' + hero?.pushSpeed.toFixed(2) + ')'
     } else if (hero?.action?.name === 'charging') {
       text = hero?.action?.name + ' (' + hero?.action?.counter?.toFixed(0) + ')'
     } else if (hero?.action?.name === 'skill') {
