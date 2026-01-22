@@ -1,17 +1,10 @@
 import Story from '@avo/story'
 import ImageAsset from '@avo/image-asset.js'
-import { ROTATIONS, TILE_ADJACENCIES } from '@avo/constants.js'
-
-import Hero from './entities/hero.js'
-import DropOffZone from './entities/drop-off-zone.js'
-import SpawnZone from './entities/spawn-zone.js'
-
-import FloorTile from './tiles/floor-tile'
-import WallTile from './tiles/wall-tile.js'
 
 import PlayerControls from './rules/player-controls.js'
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
 import SoundManager from './rules/sound-manager.js'
+import PlayerBounds from './rules/player-bounds.js'
 
 import generateGameMapFromImage from './misc/generateGameMapFromImage.js'
 
@@ -33,14 +26,20 @@ export default class CNY2026 extends Story {
     this.load_city_scene()
   }
 
+  addStandardRules () {
+    const app = this._app
+    app.addRule(new CNY2026GameManager(app))
+    app.addRule(new PlayerControls(app))
+    app.addRule(new SoundManager(app))
+    app.addRule(new PlayerBounds(app))
+  }
+
   load_debug_scene () {
     super.reset()
     const app = this._app
     
     // Setup rules
-    app.addRule(new CNY2026GameManager(app))
-    app.addRule(new PlayerControls(app))
-    app.addRule(new SoundManager(app))
+    this.addStandardRules()
 
     // Setup map
     generateGameMapFromImage(app, app.assets['map-layout-00'].img)
@@ -53,9 +52,7 @@ export default class CNY2026 extends Story {
     const app = this._app
     
     // Setup rules
-    app.addRule(new CNY2026GameManager(app))
-    app.addRule(new PlayerControls(app))
-    app.addRule(new SoundManager(app))
+    this.addStandardRules()
 
     // Setup map
     generateGameMapFromImage(app, app.assets['map-layout-01'].img)
