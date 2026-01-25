@@ -25,7 +25,7 @@ const STATES = {
   EXPLODING: 1,
 }
 
-export default class Passenger extends Creature {
+export default class Car extends Creature {
   constructor (app, col = 0, row = 0, direction) {
     super(app)
     this._type = 'car'
