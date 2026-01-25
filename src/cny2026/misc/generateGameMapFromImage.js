@@ -27,6 +27,7 @@ import SpawnZone from '../entities/spawn-zone.js'
 
 import FloorTile from '../tiles/floor-tile'
 import WallTile from '../tiles/wall-tile.js'
+import StreetTile from '../tiles/street-tile.js'
 
 export default function generateGameMapFromImage (
   app,
@@ -75,6 +76,8 @@ export default function generateGameMapFromImage (
       let tile
       if (r === 0 && g === 0 && b === 0) {
         tile = new WallTile(app, col, row)
+      } else if (r === 230 && g === 230 && b === 230) {
+        tile = new StreetTile(app, col, row)
       } else {
         tile = new FloorTile(app, col, row)
       }
