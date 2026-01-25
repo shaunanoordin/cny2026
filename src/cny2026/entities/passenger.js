@@ -10,6 +10,7 @@ Rules:
 - A Passenger has a destination Drop Off Zone.
 - A Passenger that has reached their destination is marked as "successfully
   dropped off", and will disappear after a short while.
+- If a Passenger somehow moves outside of the game map, it disappears.
  */
 
 import { LAYERS, TILE_SIZE } from '@avo/constants.js'

@@ -37,12 +37,12 @@ export default class Hero extends Creature {
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
 
-    this.mass = 10
     
     // this.health = 3
     // this.invulnerability = 0  // Invulnerability time
 
     // Physics: make the horse really fast and a bit hard to control.
+    this.mass = 10
     this._moveAcceleration = 0.6
     this._moveDeceleration = 0.1
     this._moveMaxSpeed = 8
