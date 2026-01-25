@@ -86,6 +86,9 @@ export default class Passenger extends Creature {
         hero.pickUp(this)
       }
     }
+
+    // If Passenger is outside of the game map area, it goes poof!
+    this.checkGameMapBounds()
   }
 
   paint (layer = 0) {
@@ -145,5 +148,29 @@ export default class Passenger extends Creature {
     this.expiryCountdown = EXPIRY_DURATION
 
     this._app.rules.get('sound-manager').playDestinationReached()
+  }
+
+  /*
+  If Passenger is outside of the game map area, it goes poof!
+   */
+  checkGameMapBounds () {
+    const gameMap = this._app.gameMap
+
+    if (this.pickedUp || this.destinationReached) return
+    if (!gameMap || !gameMap.width || !gameMap.height) return
+
+    const MIN_X = 0
+    const MIN_Y = 0
+    const MAX_X = gameMap.width * TILE_SIZE - 1
+    const MAX_Y = gameMap.height * TILE_SIZE - 1
+    
+    if (
+      this.x < MIN_X
+      || this.x > MAX_X
+      || this.y < MIN_Y
+      || this.y > MAX_Y
+    ) {
+      this._expired = true
+    }
   }
 }
