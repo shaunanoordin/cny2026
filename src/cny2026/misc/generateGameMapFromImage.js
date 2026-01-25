@@ -23,7 +23,7 @@ import prettifyMapTiles from './prettifyMapTiles.js'
 
 import Hero from '../entities/hero.js'
 import DropOffZone from '../entities/drop-off-zone.js'
-import SpawnZone from '../entities/spawn-zone.js'
+import PassengerSpawnZone from '../entities/passenger-spawn-zone.js'
 
 import FloorTile from '../tiles/floor-tile'
 import WallTile from '../tiles/wall-tile.js'
@@ -95,7 +95,7 @@ export default function generateGameMapFromImage (
       } else if (r === 0 && g === 255 && b === 0) {
 
         // Entity: Spawn Zone
-        app.addEntity(new SpawnZone(app, col, row))
+        app.addEntity(new PassengerSpawnZone(app, col, row))
 
       } else if (r === 0 && g === 0 && b === 255) {
 
