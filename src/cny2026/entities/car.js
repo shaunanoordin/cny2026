@@ -15,11 +15,16 @@ Rules:
   prevent too many cars getting accidentally caught on houses and etc.
  */
 
-import { DIRECTIONS, LAYERS, ROTATIONS, TILE_SIZE } from '@avo/constants.js'
+import {
+  DIRECTIONS,
+  FRAMES_PER_SECOND,
+  ROTATIONS,
+  TILE_SIZE,
+} from '@avo/constants.js'
 import Creature from '@avo/entity/types/creature.js'
 
-const MAX_LIFE_TIMER = 1200
-const EXPLOSION_DURATION = 120
+const MAX_LIFE_TIMER = 10 * FRAMES_PER_SECOND
+const EXPLOSION_DURATION = 2 * FRAMES_PER_SECOND
 const STATES = {
   ACTIVE: 0,
   EXPLODING: 1,
@@ -46,6 +51,7 @@ export default class Car extends Creature {
     this.spriteFlipEastToWest = true
 
     // Physics: make the car go zoom zoom.
+    this.size = TILE_SIZE * 1.5
     this.mass = 20
     this._moveAcceleration = 0.6
     this._pushDeceleration = 0.2
@@ -76,13 +82,14 @@ export default class Car extends Creature {
 
       if (this.lifeTimer >= MAX_LIFE_TIMER) {
         this.state = STATES.EXPLODING
+        this.solid = false
         this.lifeTimer = 0
       }
       this.lifeTimer++
 
     } else if (this.state === STATES.EXPLODING) {
       
-      if (this.lifeTimer >= MAX_LIFE_TIMER) {
+      if (this.lifeTimer >= EXPLOSION_DURATION) {
         this._expired = true
       }
       this.lifeTimer++

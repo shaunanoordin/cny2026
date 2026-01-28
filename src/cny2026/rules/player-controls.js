@@ -327,7 +327,6 @@ export default class PlayerControls extends Rule {
           case 2: x = -distance ; break
           case 3: y = -distance ; break
         }
-        console.log(hero.direction, x, y)
         app.addEntity(new Car(app, hero.col + x , hero.row + y, Math.floor(Math.random() * 4)))
       }
     }
