@@ -71,6 +71,8 @@ export default class Car extends Creature {
     super.play()
 
     if (this.state === STATES.ACTIVE) {
+      this.pushX += this.moveAcceleration * Math.cos(this.rotation)
+      this.pushY += this.moveAcceleration * Math.sin(this.rotation)
 
       if (this.lifeTimer >= MAX_LIFE_TIMER) {
         this.state = STATES.EXPLODING
