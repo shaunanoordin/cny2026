@@ -18,7 +18,9 @@ const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
 
 import Rule from '@avo/rule'
+import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
+const SHUFFLE = 10
 
 export default class CNY2026GameManager extends Rule {
   constructor (app) {
@@ -101,9 +103,13 @@ export default class CNY2026GameManager extends Rule {
   // Create new cars every once in a while.
   populateCars () {
     const app = this._app
-      const spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
-      const randomIndex = Math.floor(Math.random() * spawnZones.length)  
-      spawnZones[randomIndex].spawnCar()
+    let spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
+    spawnZones = GameAI.shuffleArray(spawnZones, SHUFFLE)
+ 
+    const NUMBER_OF_SPAWNS = 3
+    for (let i = 0 ; i < NUMBER_OF_SPAWNS && i < spawnZones.length ; i++) {
+      spawnZones[i].spawnCar()
+    }
   }
 
   endGame () {}
