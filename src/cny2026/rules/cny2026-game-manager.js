@@ -38,6 +38,7 @@ export default class CNY2026GameManager extends Rule {
 
     if (this.spawnTimer >= TIME_TO_SPAWN) {
       this.populatePassengers()
+      this.populateCars()
       this.spawnTimer = 0
     }
   }
@@ -95,6 +96,14 @@ export default class CNY2026GameManager extends Rule {
         spawnZonesWithNoNearbyPassengers[randomIndex].spawnPassenger()
       }
     }
+  }
+
+  // Create new cars every once in a while.
+  populateCars () {
+    const app = this._app
+      const spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
+      const randomIndex = Math.floor(Math.random() * spawnZones.length)  
+      spawnZones[randomIndex].spawnCar()
   }
 
   endGame () {}
