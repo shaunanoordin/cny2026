@@ -13,7 +13,7 @@ import Passenger from './passenger.js'
 
 const NEARBY_DISTANCE = TILE_SIZE * 2
 
-export default class DropOffZone extends Entity {
+export default class PassengerSpawnZone extends Entity {
   constructor(app, col = 0, row = 0) {
     super(app)
     this._type = 'passenger-spawn-zone'
