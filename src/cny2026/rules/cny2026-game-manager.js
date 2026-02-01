@@ -7,7 +7,7 @@ Rules:
   enough Passengers in the game.
   - "Enough" is determined by targetNumberOfPassengers
   - If there aren't enough Passengers, the game manager will select a random
-    SpawnZone, which doesn't have any nearby Passengers, and attempt to create
+    PassengerSpawnZone, which doesn't have any nearby Passengers, and attempt to create
     a new Passenger there.
 - Scoring: when a Passenger is successfully dropped off at their Destination
   DropOffZone, the score is incremented. This is triggered by the DropOffZone.
@@ -18,7 +18,9 @@ const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
 
 import Rule from '@avo/rule'
+import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
+const SHUFFLE = 10
 
 export default class CNY2026GameManager extends Rule {
   constructor (app) {
@@ -38,6 +40,7 @@ export default class CNY2026GameManager extends Rule {
 
     if (this.spawnTimer >= TIME_TO_SPAWN) {
       this.populatePassengers()
+      this.populateCars()
       this.spawnTimer = 0
     }
   }
@@ -85,7 +88,7 @@ export default class CNY2026GameManager extends Rule {
     if (passengers.length < DEFAULT_TARGET_NUMBER_OF_PASSENGERS) {
 
       // Find a spawn zone that isn't currently occupied by an existing Passenger
-      const spawnZones = app.entities.filter(entity => entity._type === 'spawn-zone')
+      const spawnZones = app.entities.filter(entity => entity._type === 'passenger-spawn-zone')
       const spawnZonesWithNoNearbyPassengers = spawnZones.filter(spawnZone =>
         spawnZone.getNearbyPassengers().length === 0
       )
@@ -94,6 +97,18 @@ export default class CNY2026GameManager extends Rule {
         const randomIndex = Math.floor(Math.random() * spawnZonesWithNoNearbyPassengers.length)
         spawnZonesWithNoNearbyPassengers[randomIndex].spawnPassenger()
       }
+    }
+  }
+
+  // Create new cars every once in a while.
+  populateCars () {
+    const app = this._app
+    let spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
+    spawnZones = GameAI.shuffleArray(spawnZones, SHUFFLE)
+ 
+    const NUMBER_OF_SPAWNS = 3
+    for (let i = 0 ; i < NUMBER_OF_SPAWNS && i < spawnZones.length ; i++) {
+      spawnZones[i].spawnCar()
     }
   }
 

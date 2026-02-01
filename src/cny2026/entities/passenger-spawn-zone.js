@@ -13,10 +13,10 @@ import Passenger from './passenger.js'
 
 const NEARBY_DISTANCE = TILE_SIZE * 2
 
-export default class DropOffZone extends Entity {
+export default class PassengerSpawnZone extends Entity {
   constructor(app, col = 0, row = 0) {
     super(app)
-    this._type = 'spawn-zone'
+    this._type = 'passenger-spawn-zone'
 
     this.colour = '#80e0e0'
     this.col = col
@@ -26,7 +26,7 @@ export default class DropOffZone extends Entity {
     this.solid = false
     this.movable = false
 
-    // Dynamically determine the ID and label of this SpawnZone.
+    // Dynamically determine the ID and label of this PassengerSpawnZone.
     this.id = 0
     app.entities.filter(entity => entity._type === this._type).forEach(entity => {
       this.id = Math.max(this.id, entity.id + 1)
@@ -64,13 +64,13 @@ export default class DropOffZone extends Entity {
     }
   }
 
-  // Create a Passenger at this SpawnZone.
+  // Create a Passenger at this PassengerSpawnZone.
   spawnPassenger () {
     const app = this._app
     app.addEntity(new Passenger(app, this.col, this.row))
   }
 
-  // Check for Passengers near this SpawnZone.
+  // Check for Passengers near this PassengerSpawnZone.
   getNearbyPassengers () {
     const app = this._app
     return app.entities.filter(entity => {

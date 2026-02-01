@@ -17,16 +17,18 @@ alternative to making a dedicated map editor.
 - The conversion/transformation from pixel to Tile/Entity is hardcoded for now.
  */
 
-import { ROTATIONS } from '@avo/constants.js'
+import { DIRECTIONS, ROTATIONS } from '@avo/constants.js'
 
 import prettifyMapTiles from './prettifyMapTiles.js'
 
 import Hero from '../entities/hero.js'
 import DropOffZone from '../entities/drop-off-zone.js'
-import SpawnZone from '../entities/spawn-zone.js'
+import PassengerSpawnZone from '../entities/passenger-spawn-zone.js'
+import CarSpawnZone from '../entities/car-spawn-zone.js'
 
 import FloorTile from '../tiles/floor-tile'
 import WallTile from '../tiles/wall-tile.js'
+import StreetTile from '../tiles/street-tile.js'
 
 export default function generateGameMapFromImage (
   app,
@@ -75,6 +77,11 @@ export default function generateGameMapFromImage (
       let tile
       if (r === 0 && g === 0 && b === 0) {
         tile = new WallTile(app, col, row)
+      } else if (
+        (r === 230 && g === 230 && b === 230)
+        || (r === 255 && g === 0 && b === 255)
+      ) {
+        tile = new StreetTile(app, col, row)
       } else {
         tile = new FloorTile(app, col, row)
       }
@@ -91,15 +98,26 @@ export default function generateGameMapFromImage (
 
       } else if (r === 0 && g === 255 && b === 0) {
 
-        // Entity: Spawn Zone
-        app.addEntity(new SpawnZone(app, col, row))
+        // Entity: Passenger Spawn Zone
+        app.addEntity(new PassengerSpawnZone(app, col, row))
 
       } else if (r === 0 && g === 0 && b === 255) {
 
-        // Entity: DropOffZone
+        // Entity: Drop Off Zone
         app.addEntity(new DropOffZone(app, col, row))
 
+      } else if (r === 255 && g === 0 && b === 255) {
+
+        // Entity: Car Spawn Zone
+        let direction = DIRECTIONS.EAST
+        if (col === 0) { direction = DIRECTIONS.EAST }
+        else if (row === 0) { direction = DIRECTIONS.SOUTH }
+        else if (col === width - 1) { direction = DIRECTIONS.WEST }
+        else if (row === height - 1) { direction = DIRECTIONS.NORTH }
+        app.addEntity(new CarSpawnZone(app, col, row, direction))
+
       }
+
     }
 
     // Update the game map data.

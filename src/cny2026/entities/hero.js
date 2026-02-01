@@ -37,17 +37,17 @@ export default class Hero extends Creature {
     this.spriteOffsetY = -18
     this.spriteFlipEastToWest = true
 
-    this.mass = 10
     
     // this.health = 3
     // this.invulnerability = 0  // Invulnerability time
 
     // Physics: make the horse really fast and a bit hard to control.
-    this._moveAcceleration = 0.8
+    this.mass = 10
+    this._moveAcceleration = 0.6
     this._moveDeceleration = 0.1
     this._moveMaxSpeed = 8
     this._pushDeceleration = 0.2
-    this._pushMaxSpeed = 32
+    this._pushMaxSpeed = 16
 
     // Gameplay
     this.passenger = undefined
@@ -197,8 +197,8 @@ export default class Hero extends Creature {
       const moveAcceleration = this.moveAcceleration || 0
       const actionRotation = Math.atan2(directionY, directionX)
 
-      this.moveX += moveAcceleration * Math.cos(actionRotation)
-      this.moveY += moveAcceleration * Math.sin(actionRotation)
+      this.pushX += moveAcceleration * Math.cos(actionRotation)
+      this.pushY += moveAcceleration * Math.sin(actionRotation)
       this.rotation = actionRotation
 
       action.counter = (action.counter + FRAME_DURATION) % MOVE_ACTION_CYCLE_DURATION

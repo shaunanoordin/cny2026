@@ -16,6 +16,8 @@ import Rule from '@avo/rule'
 import Physics from '@avo/physics.js'
 import { LAYERS, POINTER_DEADZONE_RADIUS, POINTER_STATES, TILE_SIZE } from '@avo/constants.js'
 
+import Car from '../entities/car.js'
+
 export default class PlayerControls extends Rule {
   constructor (app) {
     super(app)
@@ -315,10 +317,18 @@ export default class PlayerControls extends Rule {
     }
 
     if (key === 'p' || key === 'P') {  // DEBUG
-      console.log('+++ DEBUG')
       const hero = app.hero
-      const tile = app.gameMap.tiles?.[hero?.row]?.[hero?.col]
-      console.log('+++ tile: \n', tile?.checkSimilarAdjacencies())
+      if (hero) {
+        let x = 0, y = 0
+        const distance = 5
+        switch (hero.getSpriteDirection()) {
+          case 0: x = +distance ; break
+          case 1: y = +distance ; break
+          case 2: x = -distance ; break
+          case 3: y = -distance ; break
+        }
+        app.addEntity(new Car(app, hero.col + x , hero.row + y, Math.floor(Math.random() * 4)))
+      }
     }
   }
 
