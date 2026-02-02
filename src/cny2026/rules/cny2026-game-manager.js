@@ -14,13 +14,19 @@ Rules:
 - Timed Game: when the game timer runs out, the game is over.
  */
 
-const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
-const TIME_TO_SPAWN = 1 * 60
-
 import Rule from '@avo/rule'
 import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
+
 const SHUFFLE = 10
+const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
+const TIME_TO_SPAWN = 1 * 60
+const GAME_TIME = 3 * 60 * FRAMES_PER_SECOND
+
+const GAME_STATES = {
+  ACTIVE: 'active',
+  FINISHED: 'finished',
+}
 
 export default class CNY2026GameManager extends Rule {
   constructor (app) {
@@ -30,24 +36,39 @@ export default class CNY2026GameManager extends Rule {
     this.targetNumberOfPassengers = DEFAULT_TARGET_NUMBER_OF_PASSENGERS
     this.gameTimer = 0
     this.spawnTimer = 0
+
+    this.state = GAME_STATES.ACTIVE
   }
 
   deconstructor () {}
 
   play () {
-    this.gameTimer++
-    this.spawnTimer++
+    if (this.state === GAME_STATES.ACTIVE) {
+      this.gameTimer++
+      this.spawnTimer++
 
-    if (this.spawnTimer >= TIME_TO_SPAWN) {
-      this.populatePassengers()
-      this.populateCars()
-      this.spawnTimer = 0
+      if (this.spawnTimer >= TIME_TO_SPAWN) {
+        this.populatePassengers()
+        this.populateCars()
+        this.spawnTimer = 0
+      }
+
+      if (this.gameTimer >= GAME_TIME) {
+        this.gameTimer = 0
+        this.state = GAME_STATES.FINISHED
+      }
     }
   }
 
   paint (layer = 0) {
       if (layer === LAYERS.OVERLAY) {
-        this.paintUIData()
+        if (this.state === GAME_STATES.ACTIVE) {
+          this.paintUIData()
+        }
+
+        if (this.state === GAME_STATES.FINISHED) {
+          // TODO
+        }
       }
     }
     
@@ -68,7 +89,7 @@ export default class CNY2026GameManager extends Rule {
       c2d.lineWidth = 8
   
       // Paint timer
-      const currentTime = this.gameTimer
+      const currentTime = GAME_TIME - this.gameTimer
       const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
       const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
       const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
