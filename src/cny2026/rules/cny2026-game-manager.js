@@ -21,7 +21,8 @@ import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 const SHUFFLE = 10
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
-const GAME_TIME = 3 * 60 * FRAMES_PER_SECOND
+const GAME_TIME = 0.5 * 60 * FRAMES_PER_SECOND
+const SCORE_PER_PICKUP = 100
 
 const GAME_STATES = {
   ACTIVE: 'active',
@@ -38,6 +39,8 @@ export default class CNY2026GameManager extends Rule {
     this.spawnTimer = 0
 
     this.state = GAME_STATES.ACTIVE
+    
+    this.score = 0
   }
 
   deconstructor () {}
@@ -96,9 +99,17 @@ export default class CNY2026GameManager extends Rule {
       const timeText = timeInSeconds + '.' + textInMilliseconds
       c2d.textAlign = 'right'
       c2d.strokeStyle = '#fff'
-      c2d.strokeText(timeText, RIGHT, TOP)
+      c2d.strokeText(timeText, RIGHT, BOTTOM)
       c2d.fillStyle = '#c04040'
-      c2d.fillText(timeText, RIGHT, TOP)
+      c2d.fillText(timeText, RIGHT, BOTTOM)
+
+      // Paint score
+      const score = this.score
+      c2d.textAlign = 'left'
+      c2d.strokeStyle = '#fff'
+      c2d.strokeText(score, LEFT, BOTTOM)
+      c2d.fillStyle = '#c04040'
+      c2d.fillText(score, LEFT, BOTTOM)
     }
 
   // Checks if there are enough Passengers in the game. If not, create one.
@@ -133,5 +144,9 @@ export default class CNY2026GameManager extends Rule {
     }
   }
 
-  endGame () {}
+  increaseScore () {
+    if (this.state === GAME_STATES.ACTIVE) {
+      this.score += SCORE_PER_PICKUP
+    }
+  }
 }
