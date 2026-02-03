@@ -134,19 +134,86 @@ table th {
   top: 3.5em;
   left: 0.5em;
 }
-#app > main #button-sound {
+
+/*
+CNY2026
+ */
+#app.cny2026 > main #canvas {
+  background: #804040;
+}
+#app.cny2026 > main #home-menu {
+  font-family: sans-serif;
+  text-align: center;
+  overflow: visible;
+}
+#app.cny2026 > main #home-menu > div {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  border: 4px solid #c04040;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#app.cny2026 > main #cny2026-card {
+  display: block;
+  max-width: 100%;
+}
+#app.cny2026 > main #cny2026-start-panel {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1em;
+  gap: 1em;
+}
+#app.cny2026 > main #cny2026-start-button {
+  cursor: pointer;
+  color: #ffffff;
+  background: #c04040;
+  border: 2px solid #c0c0c0;
+  border-radius: 1rem;
+  box-shadow: 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.5);
+  padding: 0.5em 2em;
+}
+#app.cny2026 > main #cny2026-start-button:hover {
+  border: 2px solid #ffffff;
+}
+#app.cny2026 > main #cny2026-start-button:active {
+  border: 2px solid #808080;
+}
+#app.cny2026 > main #cny2026-start-expert-mode-button {
+  font-size: 0.5em;
+  cursor: pointer;
+  color: #606060;
+  background: #ffffff;
+  border: 2px solid #c0c0c0;
+  border-radius: 1rem;
+  box-shadow: 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.5);
+  padding: 0.5em 1em;
+}
+#app.cny2026 > main #cny2026-start-expert-mode-button:hover {
+  border: 2px solid #ffffff;
+}
+#app.cny2026 > main #cny2026-start-expert-mode-button:active {
+  border: 2px solid #808080;
+}
+#app.cny2026 > main #cny2026-credits {
+  font-size: 0.5em;
+}
+#app.cny2026 > main #button-sound {
   top: 3.5em;
   right: 0.5em;
   background: #ffffff;
   padding: 0.2em 0.75em;
 }
-#app > main #button-sound[data-muted=true]::before {
+#app.cny2026 > main #button-sound[data-muted=true]::before {
   font-size: 1.2em;
 }
-#app > main #button-sound[data-muted=true]::before {
+#app.cny2026 > main #button-sound[data-muted=true]::before {
   content: "🔇";
 }
-#app > main #button-sound[data-muted=false]::before {
+#app.cny2026 > main #button-sound[data-muted=false]::before {
   content: "🔈";
 }
 

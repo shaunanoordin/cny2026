@@ -18,6 +18,9 @@ export default class CNY2026 extends Story {
       'map-layout-00': new ImageAsset('assets/cny2026-map-00-debug.png'),
       'map-layout-01': new ImageAsset('assets/cny2026-map-01-city.png'),
     }
+
+    // Open home menu when the game starts
+    app.setHomeMenu(true)
   }
 
   start () {
