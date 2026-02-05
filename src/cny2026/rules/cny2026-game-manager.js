@@ -31,7 +31,7 @@ import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 const SHUFFLE = 10
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
-const ACTIVE_GAME_TIME = 1 // 3 * 60 * FRAMES_PER_SECOND
+const ACTIVE_GAME_TIME = 1.5 * 60 * FRAMES_PER_SECOND
 const FINISHED_SCREEN_ANIMATION_TIME = 0.5 * FRAMES_PER_SECOND
 const FINISHED_SCREEN_TIME = 10 * FRAMES_PER_SECOND
 const SCORE_PER_PICKUP = 100
@@ -52,7 +52,7 @@ export default class CNY2026GameManager extends Rule {
 
     this.state = GAME_STATES.ACTIVE
     
-    this.score = 10000
+    this.score = 0
   }
 
   deconstructor () {}
