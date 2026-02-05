@@ -1,17 +1,27 @@
 /*
 CNY2026 Game Manager
-Keeps tracks of victory and scoring.
+Manages a single round of gameplay. Keeps track of time, scoring, and the
+finish ("victory"/"game over") conditions. Spawns Passengers and Cars to keep
+things interesting.
 
 Rules:
-- Create Passengers: every 5 seconds, the Game Manager checks if there are
+- Timed Score Game: this game is about accumulating as high a score as possible
+  in a limited time. 
+- States: the Game Manager starts the game in an 'active' state, then switches
+  to a 'finished' state when time is up.
+  - Active: player can move the Hero around, and passengers and cars will spawn.
+  - Game Over (Finished): when time runs out, the game shows a "Finished Screen"
+    with the player's score.
+- Create Passengers: every 1 second, the Game Manager checks if there are
   enough Passengers in the game.
   - "Enough" is determined by targetNumberOfPassengers
   - If there aren't enough Passengers, the game manager will select a random
     PassengerSpawnZone, which doesn't have any nearby Passengers, and attempt to create
     a new Passenger there.
+- Create Cars: every 1 second, the Game will spawn Cars that zoom across the
+  city.
 - Scoring: when a Passenger is successfully dropped off at their Destination
   DropOffZone, the score is incremented. This is triggered by the DropOffZone.
-- Timed Game: when the game timer runs out, the game is over.
  */
 
 import Rule from '@avo/rule'
