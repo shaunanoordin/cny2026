@@ -161,7 +161,15 @@ export default class CNY2026GameManager extends Rule {
     const Y_OFFSET = TILE_SIZE * 1
     const MID_X = this._app.canvasWidth / 2
     const MID_Y = this._app.canvasHeight / 2
+    const TARGET_RADIUS = Math.min(this._app.canvasWidth, this._app.canvasHeight) / 2
     c2d.lineWidth = 8
+
+    // Paint background
+    const backgroundRadius = progress * TARGET_RADIUS
+    c2d.fillStyle = 'rgba(255, 255, 255, 0.8)'
+    c2d.beginPath()
+    c2d.arc(MID_X, MID_Y, backgroundRadius, 0, 2 * Math.PI)
+    c2d.fill()
 
     // Paint text 1: "Game Over"
     text = 'Shift complete!'
