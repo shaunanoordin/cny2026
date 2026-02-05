@@ -72,6 +72,7 @@ export default class DropOffZone extends Entity {
   onCollision(target, collisionCorrection) {
     super.onCollision(target, collisionCorrection)
 
+    const app = this._app
     const hero = this._app.hero
 
     if (
@@ -79,6 +80,7 @@ export default class DropOffZone extends Entity {
       && hero?.passenger
       && hero?.passenger.destination === this.id
     ) {
+
       hero.passenger.x = this.x
       hero.passenger.y = this.y
       hero.dropOff()
@@ -89,9 +91,12 @@ export default class DropOffZone extends Entity {
       && !target.destinationReached
       && target.destination === this.id
     ) {
+
       target.x = this.x
       target.y = this.y
       target.onDestinationReached()
+      app.rules.get('cny2026-game-manager').increaseScore()
+
     }
   }
 }

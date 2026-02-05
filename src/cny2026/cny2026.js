@@ -18,6 +18,14 @@ export default class CNY2026 extends Story {
       'map-layout-00': new ImageAsset('assets/cny2026-map-00-debug.png'),
       'map-layout-01': new ImageAsset('assets/cny2026-map-01-city.png'),
     }
+
+    // Add event listeners
+    this.startButton_onClick = this.startButton_onClick.bind(this)
+    document.getElementById('cny2026-start-button').addEventListener('click', this.startButton_onClick)
+    // ⚠️ NOTE: since the Story doesn't ever unload/deconstruct, there's no corresponding .removeEventListener()
+
+    // Open home menu when the game starts
+    app.setHomeMenu(true)
   }
 
   start () {
@@ -58,5 +66,10 @@ export default class CNY2026 extends Story {
     generateGameMapFromImage(app, app.assets['map-layout-01'].img)
 
     app.rules.get('cny2026-game-manager').populatePassengers()
+  }
+
+  startButton_onClick () {
+    this._app.setHomeMenu(false)
+    this.start()
   }
 }

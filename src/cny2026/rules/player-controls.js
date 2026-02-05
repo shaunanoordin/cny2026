@@ -134,6 +134,7 @@ export default class PlayerControls extends Rule {
     c2d.textBaseline = 'bottom'
     c2d.lineWidth = 8
 
+    /*
     const health = Math.max(hero?.health, 0) || 0
     let text = '❤️'.repeat(health)
     c2d.textAlign = 'left'
@@ -157,6 +158,7 @@ export default class PlayerControls extends Rule {
     c2d.strokeText(text, RIGHT, BOTTOM)
     c2d.fillStyle = '#c04040'
     c2d.fillText(text, RIGHT, BOTTOM)
+    */
   }
 
   /*

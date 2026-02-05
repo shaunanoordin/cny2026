@@ -158,6 +158,87 @@ table {
   #button-reload {
     top: 3.5em;
     left: 0.5em;
+  }  
+}
+
+/*
+CNY2026
+ */
+
+#app.cny2026 > main {
+  #canvas {
+    background: #804040;
+  }
+
+  #home-menu {
+    font-family: sans-serif;
+    text-align: center;
+    overflow: visible;
+
+    > div {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      border: 4px solid $primary;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+  
+  #cny2026-card {
+    display: block;
+    max-width: 100%;
+  }
+
+  #cny2026-start-panel {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 1em;
+    gap: 1em;
+  }
+
+  #cny2026-start-button {
+    cursor: pointer;
+    color: $white;
+    background: $primary;
+    border: 2px solid $light-grey;
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.5);
+    padding: 0.5em 2em;
+    
+    &:hover {
+      border: 2px solid $white;
+    }
+
+    &:active {
+      border: 2px solid $grey;
+    }
+  }
+
+  #cny2026-start-expert-mode-button {
+    font-size: 0.5em;
+    cursor: pointer;
+    color: $dark-grey;
+    background: $white;
+    border: 2px solid $light-grey;
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.5);
+    padding: 0.5em 1em;
+    
+    &:hover {
+      border: 2px solid $white;
+    }
+
+    &:active {
+      border: 2px solid $grey;
+    }
+  }
+
+  #cny2026-credits {
+    font-size: 0.5em;
   }
 
   #button-sound {
