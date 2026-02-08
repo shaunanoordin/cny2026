@@ -9,7 +9,6 @@ import {
   DIRECTIONS,
   FRAME_DURATION,
   LAYERS,
-  POINTER_STATES,
   SHAPES,
 } from '@avo/constants.js'
 
@@ -76,23 +75,7 @@ export default class Hero extends Creature {
 
   paint (layer = 0) {
 
-    /*
-    // Debug
-    if (layer === LAYERS.MIDDLE) {
-      const app = this._app
-      const c2d = app.canvas2d
-      app.applyCameraTransforms()
-      c2d.fillStyle = this.colour
-      c2d.strokeStyle = '#404040'
-      c2d.lineWidth = 2
-      c2d.beginPath()
-      c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
-      c2d.fill()
-      this.solid && c2d.stroke()
-      app.undoCameraTransforms()
-    }
-    */
-
+    // Draw shadow on bottom layer
     this.paintShadow(layer)
 
     // Draw the sprite
