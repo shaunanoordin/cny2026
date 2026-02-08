@@ -1,6 +1,7 @@
 import Story from '@avo/story'
 import ImageAsset from '@avo/image-asset.js'
 
+import PassengerSpawnZone from './entities/passenger-spawn-zone.js'
 import PlayerControls from './rules/player-controls.js'
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
 import SoundManager from './rules/sound-manager.js'
@@ -52,7 +53,6 @@ export default class CNY2026 extends Story {
 
     // Setup map
     generateGameMapFromImage(app, app.assets['map-layout-00'].img)
-
     app.rules.get('cny2026-game-manager').populatePassengers()
   }
 
@@ -65,8 +65,12 @@ export default class CNY2026 extends Story {
 
     // Setup map
     generateGameMapFromImage(app, app.assets['map-layout-01'].img)
-
     app.rules.get('cny2026-game-manager').populatePassengers()
+
+    // Setup map: add easy starting spawn. 
+    const startingZoneSpawn = app.addEntity(new PassengerSpawnZone(app, app.hero.col, app.hero.row + 5))
+    startingZoneSpawn.spawnPassenger()
+
   }
 
   startButton_onClick () {
