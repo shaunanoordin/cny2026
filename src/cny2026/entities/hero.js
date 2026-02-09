@@ -339,6 +339,7 @@ export default class Hero extends Creature {
   Section: Animation
   ----------------------------------------------------------------------------
    */
+  
   getSpriteCol () {
     switch (this.getSpriteDirection()) {
       case DIRECTIONS.NORTH: return 2

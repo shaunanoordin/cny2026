@@ -93,10 +93,13 @@ export default class Passenger extends Creature {
   }
 
   paint (layer = 0) {
+
+    // Draw shadow on bottom layer
     if (!this.pickedUp) {
       this.paintShadow(layer)
     }
 
+    // Draw the sprite
     if (layer === LAYERS.MIDDLE) {
       let spriteOffsetY = this.spriteOffsetY
       if (this.pickedUp) {

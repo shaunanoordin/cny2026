@@ -18,6 +18,7 @@ Rules:
 import {
   DIRECTIONS,
   FRAMES_PER_SECOND,
+  LAYERS,
   ROTATIONS,
   TILE_SIZE,
 } from '@avo/constants.js'
@@ -42,12 +43,12 @@ export default class Car extends Creature {
     this.intent = undefined
     this.action = undefined
 
-    this.spriteSheet = undefined
-    this.spriteSizeX = 24
-    this.spriteSizeY = 24
+    this.spriteSheet = app.assets['cars'].img
+    this.spriteSizeX = 32
+    this.spriteSizeY = 32
     this.spriteScale = 2
-    this.spriteOffsetX = -12
-    this.spriteOffsetY = -18
+    this.spriteOffsetX = -16
+    this.spriteOffsetY = -24
     this.spriteFlipEastToWest = true
 
     // Physics: make the car go zoom zoom.
@@ -97,6 +98,41 @@ export default class Car extends Creature {
   }
 
   paint (layer = 0) {
-    super.paint(layer)
+
+    // Draw shadow on bottom layer
+    this.paintShadow(layer)
+
+    // Draw the sprite
+    if (layer === LAYERS.MIDDLE) {
+      this.paintSprite()
+    }
+  }
+
+  /*
+  Section: Animation
+  ----------------------------------------------------------------------------
+    */
+  
+  getSpriteCol () {
+    switch (this.getSpriteDirection()) {
+      case DIRECTIONS.NORTH: return 2
+      case DIRECTIONS.EAST: return 1
+      case DIRECTIONS.SOUTH: return 0
+      case DIRECTIONS.WEST: return 1
+    }
+    return 0
+  }
+
+  getSpriteRow () {
+    if (this.state === STATES.EXPLODING) {
+      const progress = this.lifeTimer / EXPLOSION_DURATION
+      if (progress < 0.6) { return 0 }
+      else if (progress < 0.7) { return 1 }
+      else if (progress < 0.8) { return 2 }
+      else if (progress < 0.9) { return 3 }
+      else { return 4 }
+    }
+
+    return 0
   }
 }

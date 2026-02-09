@@ -41,6 +41,10 @@ export default class CarSpawnZone extends Entity {
     }
   }
 
+  paint () {
+    // Do nothing
+  }
+
   /*
   Section: General Logic
   ----------------------------------------------------------------------------
