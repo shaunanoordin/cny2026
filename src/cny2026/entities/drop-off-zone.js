@@ -18,7 +18,7 @@ Rules:
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 import Entity from '@avo/entity/entity.js'
 
-const ANIMATION_DURATION = 1 * FRAMES_PER_SECOND
+const ANIMATION_DURATION = 0.5 * FRAMES_PER_SECOND
 
 export default class DropOffZone extends Entity {
   constructor(app, col = 0, row = 0) {
