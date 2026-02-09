@@ -15,8 +15,10 @@ Rules:
   destinations.
  */
 
-import { LAYERS, TILE_SIZE } from '@avo/constants.js'
+import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 import Entity from '@avo/entity/entity.js'
+
+const ANIMATION_DURATION = 0.5 * FRAMES_PER_SECOND
 
 export default class DropOffZone extends Entity {
   constructor(app, col = 0, row = 0) {
@@ -37,6 +39,14 @@ export default class DropOffZone extends Entity {
       this.id = Math.max(this.id, entity.id + 1)
     })
     this.label = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[this.id] || '?'
+
+    this.spriteSheet = app.assets['zones'].img
+    this.spriteSizeX = 32
+    this.spriteSizeY = 32
+    this.spriteScale = 2
+    this.spriteOffsetX = -16
+    this.spriteOffsetY = -16
+    this.animationCounter = 0
   }
 
   /*
@@ -44,7 +54,17 @@ export default class DropOffZone extends Entity {
   ----------------------------------------------------------------------------
    */
 
-  paint(layer = 0) {
+  play () {
+    this.animationCounter = (this.animationCounter + 1) % ANIMATION_DURATION
+  }
+
+  paint (layer = 0) {
+
+    if (layer === LAYERS.BOTTOM) {
+      this.paintSprite()
+    }
+
+    /*
     const app = this._app
     const c2d = app.canvas2d
 
@@ -67,6 +87,7 @@ export default class DropOffZone extends Entity {
 
       app.undoCameraTransforms()
     }
+    */
   }
 
   onCollision(target, collisionCorrection) {
@@ -98,5 +119,27 @@ export default class DropOffZone extends Entity {
       app.rules.get('cny2026-game-manager').increaseScore()
 
     }
+  }
+
+  /*
+  Section: Animation
+  ----------------------------------------------------------------------------
+    */
+  
+  getSpriteCol () {
+    return this.id + 1
+  }
+
+  getSpriteRow () {
+    const hero = this._app.hero
+
+    if (hero?.passenger?.destination === this.id) {
+      const progress = this.animationCounter / ANIMATION_DURATION
+      if (progress <= 0.3333) { return 1 }
+      else if (progress <= 0.6667) { return 2 }
+      else { return 3 }
+    }
+
+    return 0
   }
 }

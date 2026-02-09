@@ -13,12 +13,13 @@ Rules:
 - If a Passenger somehow moves outside of the game map, it disappears.
  */
 
-import { LAYERS, TILE_SIZE } from '@avo/constants.js'
+import { DIRECTIONS, LAYERS, TILE_SIZE } from '@avo/constants.js'
 import Creature from '@avo/entity/types/creature.js'
 
 const PICKUP_RADIUS = TILE_SIZE * 2
 const PICKUP_COOLDOWN_DURATION = 60
 const EXPIRY_DURATION = 60
+const NUMBER_OF_SPRITE_VARIATIONS = 4
 
 export default class Passenger extends Creature {
   constructor (app, col = 0, row = 0) {
@@ -32,7 +33,7 @@ export default class Passenger extends Creature {
     this.intent = undefined
     this.action = undefined
 
-    this.spriteSheet = undefined
+    this.spriteSheet = app.assets['passengers'].img
     this.spriteSizeX = 24
     this.spriteSizeY = 24
     this.spriteScale = 2
@@ -92,9 +93,30 @@ export default class Passenger extends Creature {
   }
 
   paint (layer = 0) {
-    const app = this._app
-    const c2d = app.canvas2d
 
+    // Draw shadow on bottom layer
+    if (!this.pickedUp) {
+      this.paintShadow(layer)
+    }
+
+    // Draw the sprite
+    if (layer === LAYERS.MIDDLE) {
+      let spriteOffsetY = this.spriteOffsetY
+      if (this.pickedUp) {
+        const hero = this._app.hero
+        switch (hero?.getSpriteDirection()) {
+          case DIRECTIONS.NORTH:
+            spriteOffsetY -= 4; break
+          case DIRECTIONS.SOUTH:
+            spriteOffsetY -= 12; break
+          default:
+            spriteOffsetY -= 8
+        }
+      }
+      this.paintSprite({ spriteOffsetY })
+    }
+
+    /*
     // Debug
     if (
       (!this.pickedUp && layer === LAYERS.MIDDLE)
@@ -120,6 +142,7 @@ export default class Passenger extends Creature {
 
       app.undoCameraTransforms()
     }
+    */
   }
 
   onPickUp () {
@@ -172,5 +195,16 @@ export default class Passenger extends Creature {
     ) {
       this._expired = true
     }
+  }
+
+  getSpriteCol () {
+    return Math.floor(this.destination % NUMBER_OF_SPRITE_VARIATIONS)
+  }
+
+  getSpriteRow () {
+    if (this.pickedUp) return 1
+    if (this.destinationReached) return 2
+
+    return 0
   }
 }

@@ -9,7 +9,6 @@ import {
   DIRECTIONS,
   FRAME_DURATION,
   LAYERS,
-  POINTER_STATES,
   SHAPES,
 } from '@avo/constants.js'
 
@@ -29,17 +28,13 @@ export default class Hero extends Creature {
     this.intent = undefined
     this.action = undefined
 
-    this.spriteSheet = undefined
-    this.spriteSizeX = 24
-    this.spriteSizeY = 24
-    this.spriteScale = 2
-    this.spriteOffsetX = -12
-    this.spriteOffsetY = -18
+    this.spriteSheet = app.assets['horse'].img
+    this.spriteSizeX = 32
+    this.spriteSizeY = 32
+    this.spriteScale = 3
+    this.spriteOffsetX = -16
+    this.spriteOffsetY = -20
     this.spriteFlipEastToWest = true
-
-    
-    // this.health = 3
-    // this.invulnerability = 0  // Invulnerability time
 
     // Physics: make the horse really fast and a bit hard to control.
     this.mass = 10
@@ -74,35 +69,14 @@ export default class Hero extends Creature {
     const passenger = this.passenger
     if (passenger) {
       passenger.x = this.x
-      passenger.y = this.y
+      passenger.y = this.y + 1  // Render it one pixel south of the Hero so the sprites are rendered AFTER (i.e. on top of) the Hero.
     }
   }
 
   paint (layer = 0) {
-    const app = this._app
-    const c2d = app.canvas2d
 
-    if (this.invulnerability > 0) {  // If invulnerable, flash!
-      const flash = Math.floor(this.invulnerability / 300) % 2
-      if (flash === 1) return
-    }
-
-    // Debug
-    if (layer === LAYERS.MIDDLE) {
-      app.applyCameraTransforms()
-
-      c2d.fillStyle = this.colour
-      c2d.strokeStyle = '#404040'
-      c2d.lineWidth = 2
-      c2d.beginPath()
-      c2d.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI)
-      c2d.fill()
-      this.solid && c2d.stroke()
-
-      app.undoCameraTransforms()
-    }
-
-    // this.paintShadow(layer)
+    // Draw shadow on bottom layer
+    this.paintShadow(layer)
 
     // Draw the sprite
     if (layer === LAYERS.MIDDLE) {
@@ -365,6 +339,7 @@ export default class Hero extends Creature {
   Section: Animation
   ----------------------------------------------------------------------------
    */
+  
   getSpriteCol () {
     switch (this.getSpriteDirection()) {
       case DIRECTIONS.NORTH: return 2
@@ -381,16 +356,8 @@ export default class Hero extends Creature {
 
     if (action.name === 'move') {
       const progress = action.counter / MOVE_ACTION_CYCLE_DURATION
-      if (progress < 0.3) return 1
-      else if (progress < 0.5) return 0
-      else if (progress < 0.8) return 2
-      else if (progress < 1) return 0
-    } else if (action.name === 'charging') {
-      return 1
-    } else if (action.name === 'skill') {
-      if (action.state === 'windup') return 1
-      else if (action.state === 'execution') return 2
-      else if (action.state === 'winddown') return 2
+      if (progress < 0.5) return 1
+      else if (progress < 1) return 2
     }
 
     return 0

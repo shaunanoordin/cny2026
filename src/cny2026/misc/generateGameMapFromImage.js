@@ -93,7 +93,7 @@ export default function generateGameMapFromImage (
 
         // Entity: Hero
         app.hero = app.addEntity(new Hero(app, col, row))
-        app.hero.rotation = ROTATIONS.NORTH
+        app.hero.rotation = ROTATIONS.EAST
         app.camera.target = app.hero
 
       } else if (r === 0 && g === 255 && b === 0) {
