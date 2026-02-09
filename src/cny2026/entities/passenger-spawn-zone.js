@@ -32,6 +32,14 @@ export default class PassengerSpawnZone extends Entity {
       this.id = Math.max(this.id, entity.id + 1)
     })
     this.label = 'abcdefghijklmnopqrstuvwxyz'[this.id] || '?'
+
+    this.spriteSheet = app.assets['zones'].img
+    this.spriteSizeX = 32
+    this.spriteSizeY = 32
+    this.spriteScale = 2
+    this.spriteOffsetX = -16
+    this.spriteOffsetY = -16
+    // this.animationCounter = 0
   }
 
   /*
@@ -40,9 +48,12 @@ export default class PassengerSpawnZone extends Entity {
    */
 
   paint(layer = 0) {
-    const app = this._app
-    const c2d = app.canvas2d
 
+    if (layer === LAYERS.BOTTOM) {
+      this.paintSprite()
+    }
+
+    /*
     // Debug
     if (layer === LAYERS.BOTTOM) {
       app.applyCameraTransforms()
@@ -62,6 +73,7 @@ export default class PassengerSpawnZone extends Entity {
 
       app.undoCameraTransforms()
     }
+      */
   }
 
   // Create a Passenger at this PassengerSpawnZone.
@@ -80,5 +92,18 @@ export default class PassengerSpawnZone extends Entity {
       const distSq = distX * distX + distY * distY
       return distSq <= NEARBY_DISTANCE * NEARBY_DISTANCE
     })
+  }
+
+  /*
+  Section: Animation
+  ----------------------------------------------------------------------------
+    */
+  
+  getSpriteCol () {
+    return 0
+  }
+
+  getSpriteRow () {
+    return 0
   }
 }

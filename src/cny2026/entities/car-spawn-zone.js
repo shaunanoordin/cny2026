@@ -12,8 +12,6 @@ import { DIRECTIONS, LAYERS, ROTATIONS, TILE_SIZE } from '@avo/constants.js'
 import Entity from '@avo/entity/entity.js'
 import Car from './car.js'
 
-const NEARBY_DISTANCE = TILE_SIZE * 2
-
 export default class CarSpawnZone extends Entity {
   constructor(app, col = 0, row = 0, direction) {
     super(app)
