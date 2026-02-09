@@ -69,7 +69,7 @@ export default class Hero extends Creature {
     const passenger = this.passenger
     if (passenger) {
       passenger.x = this.x
-      passenger.y = this.y
+      passenger.y = this.y + 1  // Render it one pixel south of the Hero so the sprites are rendered AFTER (i.e. on top of) the Hero.
     }
   }
 
