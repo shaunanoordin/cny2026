@@ -94,7 +94,7 @@ export default class Passenger extends Creature {
 
   paint (layer = 0) {
     if (!this.pickedUp) {
-      this.paintShadow()
+      this.paintShadow(layer)
     }
 
     if (layer === LAYERS.MIDDLE) {
