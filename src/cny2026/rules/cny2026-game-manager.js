@@ -36,9 +36,10 @@ const FINISHED_SCREEN_ANIMATION_TIME = 0.5 * FRAMES_PER_SECOND
 const FINISHED_SCREEN_TIME = 10 * FRAMES_PER_SECOND
 const SCORE_PER_PICKUP = 100
 
-const GAME_STATES = {
-  ACTIVE: 'active',
-  FINISHED: 'finished',
+export const GAME_STATES = {
+  INITIALISING: 'init',  // Show startup screen. 
+  ACTIVE: 'active',  // Gameplay!
+  FINISHED: 'finished',  // Show finished screen
 }
 
 export default class CNY2026GameManager extends Rule {
@@ -190,6 +191,13 @@ export default class CNY2026GameManager extends Rule {
     c2d.strokeText(text, MID_X, MID_Y + Y_OFFSET)
     c2d.fillStyle = '#c04040'
     c2d.fillText(text, MID_X, MID_Y + Y_OFFSET)
+  }
+
+  // Start the game round!
+  start () {
+    if (this.state === GAME_STATES.INITIALISING) {
+      this.state = GAME_STATES.ACTIVE
+    }
   }
 
   // Checks if there are enough Passengers in the game. If not, create one.
