@@ -37,7 +37,7 @@ const FINISHED_SCREEN_TIME = 10 * FRAMES_PER_SECOND
 const SCORE_PER_PICKUP = 100
 
 export const GAME_STATES = {
-  INITIALISING: 'init',  // Show startup screen. 
+  STARTING_UP: 'init',  // Show startup screen. 
   ACTIVE: 'active',  // Gameplay!
   FINISHED: 'finished',  // Show finished screen
 }
@@ -51,7 +51,7 @@ export default class CNY2026GameManager extends Rule {
     this.gameTimer = 0
     this.spawnTimer = 0
 
-    this.state = GAME_STATES.ACTIVE
+    this.state = GAME_STATES.STARTING_UP
     
     this.score = 0
   }
@@ -195,7 +195,7 @@ export default class CNY2026GameManager extends Rule {
 
   // Start the game round!
   start () {
-    if (this.state === GAME_STATES.INITIALISING) {
+    if (this.state === GAME_STATES.STARTING_UP) {
       this.state = GAME_STATES.ACTIVE
     }
   }

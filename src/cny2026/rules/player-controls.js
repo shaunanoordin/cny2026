@@ -21,8 +21,6 @@ export default class PlayerControls extends Rule {
     super(app)
     this._type = 'player-controls'
     this.inputTap = false
-    this.chargeUpStart = false
-    this.chargeUpEnd = false
     
     this.onKeyDown = this.onKeyDown.bind(this)
     this.onKeyUp = this.onKeyUp.bind(this)
@@ -45,7 +43,7 @@ export default class PlayerControls extends Rule {
     const gameState = app.rules.get('cny2026-game-manager')?.state
     super.play()
 
-    if (hero && gameState !== GAME_STATES.INITIALISING) {
+    if (hero && gameState !== GAME_STATES.STARTING_UP) {
       const {
         keysPressed,
         pointerCurrent,
@@ -76,24 +74,6 @@ export default class PlayerControls extends Rule {
         if (keysPressed['ArrowDown']) directionY++
         if (keysPressed['ArrowLeft']) directionX--
         if (keysPressed['ArrowUp']) directionY--
-      }
-      
-      // Charge Up action
-      if (this.chargeUpStart && !this.chargeUpEnd) {
-        this.chargeUpStart = false
-        intent = {
-          name: 'charging',
-          directionX,
-          directionY,
-        }
-      } else if (this.chargeUpEnd) {
-        this.chargeUpStart = false
-        this.chargeUpEnd = false
-        intent = {
-          name: 'skill',
-          directionX,
-          directionY,
-        }
       }
       
       // Move action
