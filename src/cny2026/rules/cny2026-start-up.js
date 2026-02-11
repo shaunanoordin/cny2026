@@ -72,14 +72,35 @@ export default class CNY2026StartUp extends Rule {
       c2d.rect(0, 0, app.canvasWidth, app.canvasHeight)
       c2d.fill()
 
-      // Paint "Let's go!" prompt
+      // Paint goals
+      this.paintGoals()
+
+      // Paint "Let's go!" prompt and instructions
+      // Do this only when input is ready to start the game. No point telling
+      // people to Let's Go! when we can't, uh, go.
       if (startUpProgress >= 1) {
         this.paintLetsGoPrompt()
+        this.paintInstructions()
       }
-
-      // Paint instructions
-      this.paintInstructions()
     }
+  }
+
+  paintGoals () {
+    const app = this._app
+    const c2d = app.canvas2d
+
+    const text = 'Deliver passengers to their destinations!'
+    const MID_X = app.canvasWidth / 2
+    const MID_Y = app.canvasHeight / 2
+    
+    c2d.font = 'bold 2em Source Code Pro'
+    c2d.textAlign = 'center'
+    c2d.textBaseline = 'middle'
+    c2d.lineWidth = 8
+    c2d.strokeStyle = '#ffffff'
+    c2d.fillStyle = '#c04040'
+    c2d.strokeText(text, MID_X, MID_Y - TILE_SIZE * 7)
+    c2d.fillText(text, MID_X, MID_Y - TILE_SIZE * 7)
   }
 
   paintLetsGoPrompt () {
@@ -89,6 +110,7 @@ export default class CNY2026StartUp extends Rule {
     const text = 'Let\'s go!'
     const MID_X = app.canvasWidth / 2
     const MID_Y = app.canvasHeight / 2
+
     c2d.font = 'bold 2em Source Code Pro'
     c2d.textAlign = 'center'
     c2d.textBaseline = 'middle'
