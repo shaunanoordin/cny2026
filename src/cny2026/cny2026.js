@@ -21,6 +21,7 @@ export default class CNY2026 extends Story {
       'passengers': new ImageAsset('assets/cny2026-passengers.png'),
       'cars': new ImageAsset('assets/cny2026-cars.png'),
       'zones': new ImageAsset('assets/cny2026-zones.png'),
+      'misc': new ImageAsset('assets/cny2026-misc.png'),
       'map': new ImageAsset('assets/avo-sprites-2025-03-map-tiles.png'),
       'map-layout-00': new ImageAsset('assets/cny2026-map-00-debug.png'),
       'map-layout-01': new ImageAsset('assets/cny2026-map-01-city.png'),

@@ -10,16 +10,18 @@ The Startup is shown before every round of gameplay.
  */
 
 import Rule from '@avo/rule'
-import { FRAMES_PER_SECOND, LAYERS, POINTER_STATES } from '@avo/constants.js'
+import { FRAMES_PER_SECOND, LAYERS, POINTER_STATES, TILE_SIZE } from '@avo/constants.js'
 import { GAME_STATES } from './cny2026-game-manager.js'
 
 const START_UP_DELAY = 1 * FRAMES_PER_SECOND
+const SHORT_ANIMATION_DURATION = 1 * FRAMES_PER_SECOND
 
 export default class CNY2026StartUp extends Rule {
   constructor (app) {
     super(app)
 
     this.startUpTimer = 0  // Wait a while before letting players start the game.
+    this.shortAnimationTimer = 0
   }
 
   play () {
@@ -28,6 +30,9 @@ export default class CNY2026StartUp extends Rule {
 
     // Only do something if the gameplay round is starting up
     if (gameState !== GAME_STATES.STARTING_UP) return
+
+    // Tick the animation counters
+    this.shortAnimationTimer = (this.shortAnimationTimer + 1) % SHORT_ANIMATION_DURATION
 
     // Actually, wait for a while before letting players start the game.
     // Otherwise, they might click too fast to see the tutorial.
@@ -61,11 +66,90 @@ export default class CNY2026StartUp extends Rule {
       const c2d = app.canvas2d
       const startUpProgress = this.startUpTimer / START_UP_DELAY
 
+      // Paint background
       c2d.fillStyle = `rgb(255, 255, 255, ${startUpProgress * 0.6 + 0.2})`
       c2d.beginPath()
       c2d.rect(0, 0, app.canvasWidth, app.canvasHeight)
       c2d.fill()
+
+      // Paint instructions
+      this.paintInstructions()
     }
+  }
+
+  paintInstructions () {
+    const app = this._app
+    const c2d = app.canvas2d
+
+    const MID_X = app.canvasWidth / 2
+    const MID_Y = app.canvasHeight / 2
+    const progress = this.shortAnimationTimer / SHORT_ANIMATION_DURATION
+
+    // Paint keyboard controls
+    this.paintSprite({
+      spriteSheet: app.assets['misc'].img,
+      spriteCol: (progress < 0.5) ? 0 : 1,
+      spriteRow: 0,
+      spriteScale: 4,
+      x: MID_X - TILE_SIZE * 4,
+      y: MID_Y + TILE_SIZE * 2,
+    })
+
+    // Paint touch controls
+    this.paintSprite({
+      spriteSheet: app.assets['misc'].img,
+      spriteCol: (progress < 0.5) ? 2 : 3,
+      spriteRow: 0,
+      spriteScale: 4,
+      x: MID_X + TILE_SIZE * 4,
+      y: MID_Y + TILE_SIZE * 2,
+    })
+
+  }
+
+  paintSprite (args = {
+    spriteSheet: undefined,
+    x: undefined,
+    y: undefined,
+
+    // Source values
+    spriteCol: undefined,  // Column and row of source sprite on the sprite sheet. 
+    spriteRow: undefined,
+    spriteSizeX: undefined,  // Size of source sprite on sprite sheet.
+    spriteSizeY: undefined,
+
+    // Painting target values
+    spriteOffsetX: undefined,  // Offset of sprite relative to this Entity's {x,y}, when painted on canvas.
+    spriteOffsetY: undefined,  // This is usually -0.5 * spriteSizeXorY to make sure the sprite is centred on Entity.
+    spriteScale: undefined,  // Scale of the sprite when paint()ed.
+  }) {
+    const app = this._app
+    const c2d = app.canvas2d
+    if (!args.spriteSheet) return
+
+    // Calculate all the variables
+    const sizeX = args?.spriteSizeX ?? TILE_SIZE
+    const sizeY = args?.spriteSizeY ?? TILE_SIZE
+    const srcX = (args?.spriteCol ?? 0) * sizeX
+    const srcY = (args?.spriteRow ?? 0) * sizeY
+    const scaleX = args?.spriteScale ?? 1
+    const scaleY = args?.spriteScale ?? 1
+
+    c2d.save()
+
+    c2d.translate(args.x, args.y)  // 1. This moves the 'drawing origin' to match the position of (the centre of) the Entity.
+    c2d.scale(scaleX, scaleY)  // 2. This ensures the sprite scales with the 'drawing origin' as the anchor point.
+    
+    // 4. tgtX and tgtY specify where to draw the sprite, relative to the 'drawing origin'.
+    let tgtX = args?.spriteOffsetX ?? -sizeX / 2
+    let tgtY = args?.spriteOffsetY ?? -sizeY / 2
+
+    c2d.drawImage(args.spriteSheet,
+      srcX, srcY, sizeX, sizeY,
+      tgtX, tgtY, sizeX, sizeY
+    )
+
+    c2d.restore()
   }
 
   // Start the game round!
