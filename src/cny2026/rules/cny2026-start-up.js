@@ -15,6 +15,7 @@ import { GAME_STATES } from './cny2026-game-manager.js'
 
 const START_UP_DELAY = 1 * FRAMES_PER_SECOND
 const SHORT_ANIMATION_DURATION = 1 * FRAMES_PER_SECOND
+const LONG_ANIMATION_DURATION = 6 * FRAMES_PER_SECOND
 
 export default class CNY2026StartUp extends Rule {
   constructor (app) {
@@ -22,6 +23,7 @@ export default class CNY2026StartUp extends Rule {
 
     this.startUpTimer = 0  // Wait a while before letting players start the game.
     this.shortAnimationTimer = 0
+    this.longAnimationTimer = 0
   }
 
   play () {
@@ -33,6 +35,7 @@ export default class CNY2026StartUp extends Rule {
 
     // Tick the animation counters
     this.shortAnimationTimer = (this.shortAnimationTimer + 1) % SHORT_ANIMATION_DURATION
+    this.longAnimationTimer = (this.longAnimationTimer + 1) % LONG_ANIMATION_DURATION
 
     // Actually, wait for a while before letting players start the game.
     // Otherwise, they might click too fast to see the tutorial.
@@ -74,6 +77,7 @@ export default class CNY2026StartUp extends Rule {
 
       // Paint goals
       this.paintGoals()
+      this.paintAnimatedExample()
 
       // Paint "Let's go!" prompt and instructions
       // Do this only when input is ready to start the game. No point telling
@@ -120,6 +124,47 @@ export default class CNY2026StartUp extends Rule {
     c2d.strokeText(text, MID_X, MID_Y + TILE_SIZE * 2)
     c2d.fillText(text, MID_X, MID_Y + TILE_SIZE * 2)
   }
+
+  paintAnimatedExample () {
+    const app = this._app
+    const c2d = app.canvas2d
+
+    const progress = this.longAnimationTimer / LONG_ANIMATION_DURATION
+    const MID_X = app.canvasWidth / 2
+    const MID_Y = app.canvasHeight / 2
+    const HORSE_MIN_X = MID_X - TILE_SIZE * 8
+    const HORSE_MAX_X = MID_X + TILE_SIZE * 8
+    const PASSENGER_START_X = MID_X - TILE_SIZE * 4
+    const DROP_OFF_ZONE_X = MID_X + TILE_SIZE * 4
+
+    const horseX = (HORSE_MAX_X - HORSE_MIN_X) * progress + HORSE_MIN_X
+    this.paintSprite({
+      spriteSheet: app.assets['horse'].img,
+      spriteCol: 1,
+      spriteRow: 1,
+      spriteScale: 4,
+      x: horseX,
+      y: MID_Y - TILE_SIZE * 3,
+    })
+
+    const passengerX = Math.min(Math.max(PASSENGER_START_X, horseX), DROP_OFF_ZONE_X)
+    const passengerPickedUp = horseX >= PASSENGER_START_X
+    const passengerDroppedOff = horseX >= DROP_OFF_ZONE_X
+    this.paintSprite({
+      spriteSheet: app.assets['passengers'].img,
+      spriteCol: 0,
+      spriteRow: (passengerDroppedOff) ? 2 : (passengerPickedUp) ? 1 : 0,
+      spriteScale: 3,
+      spriteSizeX: 24,
+      spriteSizeY: 24,
+      spriteOffsetX: -12,
+      spriteOffsetY: (passengerPickedUp) ? -24 : -16,
+      x: passengerX,
+      y: MID_Y - TILE_SIZE * 3,
+    })
+
+  }
+
 
   paintInstructions () {
     const app = this._app
