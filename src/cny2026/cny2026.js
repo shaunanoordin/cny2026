@@ -2,10 +2,12 @@ import Story from '@avo/story'
 import ImageAsset from '@avo/image-asset.js'
 
 import PassengerSpawnZone from './entities/passenger-spawn-zone.js'
-import PlayerControls from './rules/player-controls.js'
+
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
-import SoundManager from './rules/sound-manager.js'
+import CNY2026StartUp from './rules/cny2026-start-up.js'
 import PlayerBounds from './rules/player-bounds.js'
+import PlayerControls from './rules/player-controls.js'
+import SoundManager from './rules/sound-manager.js'
 
 import generateGameMapFromImage from './misc/generateGameMapFromImage.js'
 
@@ -19,6 +21,7 @@ export default class CNY2026 extends Story {
       'passengers': new ImageAsset('assets/cny2026-passengers.png'),
       'cars': new ImageAsset('assets/cny2026-cars.png'),
       'zones': new ImageAsset('assets/cny2026-zones.png'),
+      'misc': new ImageAsset('assets/cny2026-misc.png'),
       'map': new ImageAsset('assets/avo-sprites-2025-03-map-tiles.png'),
       'map-layout-00': new ImageAsset('assets/cny2026-map-00-debug.png'),
       'map-layout-01': new ImageAsset('assets/cny2026-map-01-city.png'),
@@ -42,9 +45,10 @@ export default class CNY2026 extends Story {
   addStandardRules () {
     const app = this._app
     app.addRule(new CNY2026GameManager(app))
+    app.addRule(new CNY2026StartUp(app))
     app.addRule(new PlayerControls(app))
-    app.addRule(new SoundManager(app))
     app.addRule(new PlayerBounds(app))
+    app.addRule(new SoundManager(app))
   }
 
   load_debug_scene () {
