@@ -72,14 +72,35 @@ export default class CNY2026StartUp extends Rule {
       c2d.rect(0, 0, app.canvasWidth, app.canvasHeight)
       c2d.fill()
 
+      // Paint "Let's go!" prompt
+      if (startUpProgress >= 1) {
+        this.paintLetsGoPrompt()
+      }
+
       // Paint instructions
       this.paintInstructions()
     }
   }
 
-  paintInstructions () {
+  paintLetsGoPrompt () {
     const app = this._app
     const c2d = app.canvas2d
+
+    const text = 'Let\'s go!'
+    const MID_X = app.canvasWidth / 2
+    const MID_Y = app.canvasHeight / 2
+    c2d.font = 'bold 2em Source Code Pro'
+    c2d.textAlign = 'center'
+    c2d.textBaseline = 'middle'
+    c2d.lineWidth = 8
+    c2d.strokeStyle = '#ffffff'
+    c2d.fillStyle = '#c04040'
+    c2d.strokeText(text, MID_X, MID_Y + TILE_SIZE * 2)
+    c2d.fillText(text, MID_X, MID_Y + TILE_SIZE * 2)
+  }
+
+  paintInstructions () {
+    const app = this._app
 
     const MID_X = app.canvasWidth / 2
     const MID_Y = app.canvasHeight / 2
@@ -91,7 +112,7 @@ export default class CNY2026StartUp extends Rule {
       spriteCol: (progress < 0.5) ? 0 : 1,
       spriteRow: 0,
       spriteScale: 4,
-      x: MID_X - TILE_SIZE * 4,
+      x: MID_X - TILE_SIZE * 8,
       y: MID_Y + TILE_SIZE * 2,
     })
 
@@ -101,7 +122,7 @@ export default class CNY2026StartUp extends Rule {
       spriteCol: (progress < 0.5) ? 2 : 3,
       spriteRow: 0,
       spriteScale: 4,
-      x: MID_X + TILE_SIZE * 4,
+      x: MID_X + TILE_SIZE * 8,
       y: MID_Y + TILE_SIZE * 2,
     })
 
