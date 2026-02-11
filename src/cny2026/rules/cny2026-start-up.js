@@ -127,7 +127,6 @@ export default class CNY2026StartUp extends Rule {
 
   paintAnimatedExample () {
     const app = this._app
-    const c2d = app.canvas2d
 
     const progress = this.longAnimationTimer / LONG_ANIMATION_DURATION
     const MID_X = app.canvasWidth / 2
@@ -176,9 +175,7 @@ export default class CNY2026StartUp extends Rule {
       x: passengerX,
       y: Y,
     })
-
   }
-
 
   paintInstructions () {
     const app = this._app
@@ -206,7 +203,6 @@ export default class CNY2026StartUp extends Rule {
       x: MID_X + TILE_SIZE * 8,
       y: MID_Y + TILE_SIZE * 2,
     })
-
   }
 
   paintSprite (args = {
