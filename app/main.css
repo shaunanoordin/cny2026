@@ -157,7 +157,8 @@ CNY2026
 }
 #app.cny2026 > main #cny2026-card {
   display: block;
-  max-width: 100%;
+  max-width: 60%;
+  margin: 0 auto;
 }
 #app.cny2026 > main #cny2026-start-panel {
   align-items: center;
