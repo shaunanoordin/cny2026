@@ -221,4 +221,11 @@ CNY2026
   content: "🔈";
 }
 
+@media (max-height: 300px) {
+  #app.cny2026 > main #home-menu {
+    display: block;
+    overflow: scroll;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */

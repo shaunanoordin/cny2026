@@ -269,3 +269,13 @@ CNY2026
     }
   }
 }
+
+// Centre Home Screen: special fix for extremely short screens
+@media (max-height: 300px) {
+  #app.cny2026 > main {
+    #home-menu {
+      display: block;
+      overflow: scroll;
+    }
+  }
+}
