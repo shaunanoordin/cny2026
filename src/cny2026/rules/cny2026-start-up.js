@@ -70,7 +70,7 @@ export default class CNY2026StartUp extends Rule {
       const startUpProgress = this.startUpTimer / START_UP_DELAY
 
       // Paint background
-      c2d.fillStyle = `rgb(255, 255, 255, ${startUpProgress * 0.6 + 0.2})`
+      c2d.fillStyle = `rgb(255, 255, 255, ${1.0 - startUpProgress * 0.4})`
       c2d.beginPath()
       c2d.rect(0, 0, app.canvasWidth, app.canvasHeight)
       c2d.fill()

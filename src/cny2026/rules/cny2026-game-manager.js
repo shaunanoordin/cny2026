@@ -28,6 +28,8 @@ import Rule from '@avo/rule'
 import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 
+import { saveHighScore } from '../misc/highScore.js'
+
 const SHUFFLE = 10
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
 const TIME_TO_SPAWN = 1 * 60
@@ -77,6 +79,7 @@ export default class CNY2026GameManager extends Rule {
       if (this.gameTimer >= ACTIVE_GAME_TIME) {
         this.gameTimer = 0
         this.state = GAME_STATES.FINISHED
+        saveHighScore(this.score)
       }
 
     } else if (this.state === GAME_STATES.FINISHED) {
