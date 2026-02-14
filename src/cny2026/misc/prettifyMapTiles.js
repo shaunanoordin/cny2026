@@ -51,6 +51,35 @@ export default function prettifyMapTiles (gameMap) {
       }
     }
 
+    // CNY2026 hardcoded custom styles!
+    for (let row = 0 ; row < gameMap.height ; row++) {
+      for (let col = 0 ; col < gameMap.width ; col++) {
+        const tile = gameMap.tiles[row][col]
+        const tileType = tile?._type
+
+        if (!tile) continue
+
+        // "Passenger Spawn Zone" buildings
+        if (tileType === 'wall-tile'
+          && (
+            (1 <= row && row <= 15)
+            || (41 <= row && row <= 55 )
+          )
+          && (
+            (1 <= col && col <= 15)
+            || (41 <= col && col <= 55 )
+          )
+        ) {
+          tile.ceilingSpriteCol += 4
+          tile.wallSpriteCol += 4
+          if (col === 8 || col === 48) {
+            tile.wallSpriteCol -= 3
+          }
+        }
+
+      }
+    }
+
   } catch (err) {
     console.error('prettifyMapTiles(): ', err)
     return false
