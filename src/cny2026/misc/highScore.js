@@ -56,8 +56,6 @@ export function updateHighScoreHtml () {
   const score = loadHighScore()
   if (!html) return
 
-  console.log('+++ update High Score: ', score)
-
   if (Number.isInteger(score)) {
     html.style.display = 'block'
     html.innerText = `High score: ${score}`
