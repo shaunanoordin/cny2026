@@ -9,6 +9,7 @@ import PlayerBounds from './rules/player-bounds.js'
 import PlayerControls from './rules/player-controls.js'
 import SoundManager from './rules/sound-manager.js'
 
+import { updateHighScoreHtml } from './misc/highScore.js'
 import generateGameMapFromImage from './misc/generateGameMapFromImage.js'
 
 export default class CNY2026 extends Story {
@@ -34,6 +35,9 @@ export default class CNY2026 extends Story {
 
     // Open home menu when the game starts
     app.setHomeMenu(true)
+
+    // Update the high score.
+    updateHighScoreHtml()
   }
 
   start () {
