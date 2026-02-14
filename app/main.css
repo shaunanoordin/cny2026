@@ -163,6 +163,10 @@ CNY2026
   max-width: 60%;
   margin: 0 auto;
 }
+#app.cny2026 > main #cny2026-message {
+  max-width: 640px;
+  margin: 1em auto;
+}
 #app.cny2026 > main #cny2026-start-panel {
   align-items: center;
   display: flex;
@@ -179,6 +183,7 @@ CNY2026
   border-radius: 1rem;
   box-shadow: 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.5);
   padding: 0.5em 2em;
+  animation: 3s infinite ease cny2026-start-button-animation;
 }
 #app.cny2026 > main #cny2026-start-button:hover {
   border: 2px solid #ffffff;
@@ -230,6 +235,17 @@ CNY2026
   #app.cny2026 > main #home-menu {
     display: block;
     overflow: scroll;
+  }
+}
+@keyframes cny2026-start-button-animation {
+  0% {
+    background: #c04040;
+  }
+  50% {
+    background: #e06060;
+  }
+  100% {
+    background: #c04040;
   }
 }
 
