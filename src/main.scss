@@ -203,10 +203,10 @@ CNY2026
   #cny2026-start-panel {
     align-items: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     margin-bottom: 1em;
-    gap: 1em;
+    gap: 1.5em;
   }
 
   #cny2026-start-button {
@@ -225,6 +225,12 @@ CNY2026
     &:active {
       border: 2px solid $grey;
     }
+  }
+
+  #cny2026-high-score {
+    color: hsl(45, 80, 60);
+    font-weight: bold;
+    font-style: italic;
   }
 
   #cny2026-start-expert-mode-button {
