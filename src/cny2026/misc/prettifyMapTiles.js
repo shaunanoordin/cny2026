@@ -62,12 +62,12 @@ export default function prettifyMapTiles (gameMap) {
         // "Passenger Spawn Zone" buildings
         if (tileType === 'wall-tile'
           && (
-            (1 <= row && row <= 15)
-            || (41 <= row && row <= 55 )
-          )
-          && (
             (1 <= col && col <= 15)
             || (41 <= col && col <= 55 )
+          )
+          && (
+            (1 <= row && row <= 15)
+            || (41 <= row && row <= 55 )
           )
         ) {
           tile.ceilingSpriteCol += 4
@@ -75,6 +75,66 @@ export default function prettifyMapTiles (gameMap) {
           if (col === 8 || col === 48) {
             tile.wallSpriteCol -= 3
           }
+        }
+
+        // "Drop Off Zone" building: yellow
+        if (tileType === 'wall-tile'
+          && (25 <= col && col <= 31)
+          && (5 <= row && row <= 10)
+        ) {
+          tile.ceilingSpriteCol += 8
+          tile.wallSpriteCol += 8
+          if (col === 28 && row === 10) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+        }
+
+        // "Drop Off Zone" building: blue
+        if (tileType === 'wall-tile'
+          && (5 <= col && col <= 11)
+          && (25 <= row && row <= 30)
+        ) {
+          tile.ceilingSpriteCol += 12
+          tile.wallSpriteCol += 12
+          if (col === 8 && row === 30) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+        }
+
+        // "Drop Off Zone" building: green
+        if (tileType === 'wall-tile'
+          && (45 <= col && col <= 51)
+          && (25 <= row && row <= 30)
+        ) {
+          tile.ceilingSpriteCol += 8
+          tile.wallSpriteCol += 8
+          if (col === 48 && row === 30) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+          tile.ceilingSpriteRow += 5
+          tile.wallSpriteRow += 5
+        }
+
+        // "Drop Off Zone" building: pink
+        if (tileType === 'wall-tile'
+          && (25 <= col && col <= 31)
+          && (45 <= row && row <= 51)
+        ) {
+          tile.ceilingSpriteCol += 12
+          tile.wallSpriteCol += 12
+          if (col === 28 && row === 50) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+          tile.ceilingSpriteRow += 5
+          tile.wallSpriteRow += 5
         }
 
       }
