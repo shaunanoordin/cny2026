@@ -121,16 +121,32 @@ export default class CNY2026GameManager extends Rule {
     
     const X_OFFSET = TILE_SIZE * 1.5
     const Y_OFFSET = TILE_SIZE * -1.0
+    const MID_X = this._app.canvasWidth / 2
+    const MID_Y = this._app.canvasHeight / 2
     const LEFT = X_OFFSET
     const RIGHT = this._app.canvasWidth - X_OFFSET
     const TOP = -Y_OFFSET
     const BOTTOM = this._app.canvasHeight + Y_OFFSET
+    const CLOCK_RADIUS = 24
     c2d.font = '2em monospace'
     c2d.textBaseline = 'middle'
     c2d.lineWidth = 8
 
+    // Paint clock
+    const currentTime = this.gameTimer
+    const gameTimeLeft = currentTime / ACTIVE_GAME_TIME
+    c2d.fillStyle = '#e04040'
+    c2d.strokeStyle = '#fff'
+    c2d.lineWidth = 2
+    c2d.beginPath()
+    c2d.lineTo(MID_X, TOP - CLOCK_RADIUS)
+    c2d.moveTo(MID_X, TOP)
+    c2d.arc(MID_X, TOP, CLOCK_RADIUS, -0.5 * Math.PI + gameTimeLeft * 2 * Math.PI, -0.5 * Math.PI)
+    c2d.lineTo(MID_X, TOP)
+    c2d.fill()
+    c2d.stroke()
+
     // Paint timer
-    const currentTime = ACTIVE_GAME_TIME - this.gameTimer
     const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
     const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
     const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
