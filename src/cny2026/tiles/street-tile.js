@@ -4,7 +4,7 @@ import { LAYERS } from '@avo/constants.js'
 export default class StreetTile extends Tile {
   constructor (app, col = 0, row = 0) {
     super(app, col, row)
-    this._type = 'floor-tile'
+    this._type = 'street-tile'
 
     this.colour = '#f0f0f0'
     this.solid = false

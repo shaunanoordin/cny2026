@@ -137,6 +137,30 @@ export default function prettifyMapTiles (gameMap) {
           tile.wallSpriteRow += 5
         }
 
+        // Street Tiles
+        if (tileType === 'street-tile') {
+          console.log('+++ ', row, col)
+          const sTile = gameMap.tiles?.[row + 1]?.[col + 0]
+          const nTile = gameMap.tiles?.[row - 1]?.[col + 0]
+          const eTile = gameMap.tiles?.[row + 0]?.[col + 1]
+          const wTile = gameMap.tiles?.[row + 0]?.[col - 1]
+          const seTile = gameMap.tiles?.[row + 1]?.[col + 1]
+          const neTile = gameMap.tiles?.[row - 1]?.[col + 1]
+          const swTile = gameMap.tiles?.[row + 1]?.[col - 1]
+          const nwile = gameMap.tiles?.[row - 1]?.[col - 1]
+
+          function isNeighbourDifferent (neigbourTile) {
+            return !!(['wall-tile', 'floor-tile'].includes(neigbourTile?._type))
+          }
+
+          if (isNeighbourDifferent(sTile)) { tile.floorSpriteRow += 1 }
+          else if (isNeighbourDifferent(nTile)) { tile.floorSpriteRow -= 1 }
+          else if (isNeighbourDifferent(eTile)) { tile.floorSpriteCol += 1 }
+          else if (isNeighbourDifferent(wTile)) { tile.floorSpriteCol -= 1 }
+
+
+        }
+
       }
     }
 
