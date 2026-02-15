@@ -51,6 +51,135 @@ export default function prettifyMapTiles (gameMap) {
       }
     }
 
+    // CNY2026 hardcoded custom styles!
+    for (let row = 0 ; row < gameMap.height ; row++) {
+      for (let col = 0 ; col < gameMap.width ; col++) {
+        const tile = gameMap.tiles[row][col]
+        const tileType = tile?._type
+
+        if (!tile) continue
+
+        // "Passenger Spawn Zone" buildings
+        if (tileType === 'wall-tile'
+          && (
+            (1 <= col && col <= 15)
+            || (41 <= col && col <= 55 )
+          )
+          && (
+            (1 <= row && row <= 15)
+            || (41 <= row && row <= 55 )
+          )
+        ) {
+          tile.ceilingSpriteCol += 4
+          tile.wallSpriteCol += 4
+          if (col === 8 || col === 48) {
+            tile.wallSpriteCol -= 3
+          }
+        }
+
+        // "Drop Off Zone" building: yellow
+        if (tileType === 'wall-tile'
+          && (25 <= col && col <= 31)
+          && (5 <= row && row <= 10)
+        ) {
+          tile.ceilingSpriteCol += 8
+          tile.wallSpriteCol += 8
+          if (col === 28 && row === 10) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+        }
+
+        // "Drop Off Zone" building: blue
+        if (tileType === 'wall-tile'
+          && (5 <= col && col <= 11)
+          && (25 <= row && row <= 30)
+        ) {
+          tile.ceilingSpriteCol += 12
+          tile.wallSpriteCol += 12
+          if (col === 8 && row === 30) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+        }
+
+        // "Drop Off Zone" building: green
+        if (tileType === 'wall-tile'
+          && (45 <= col && col <= 51)
+          && (25 <= row && row <= 30)
+        ) {
+          tile.ceilingSpriteCol += 8
+          tile.wallSpriteCol += 8
+          if (col === 48 && row === 30) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+          tile.ceilingSpriteRow += 5
+          tile.wallSpriteRow += 5
+        }
+
+        // "Drop Off Zone" building: pink
+        if (tileType === 'wall-tile'
+          && (25 <= col && col <= 31)
+          && (45 <= row && row <= 51)
+        ) {
+          tile.ceilingSpriteCol += 12
+          tile.wallSpriteCol += 12
+          if (col === 28 && row === 50) {
+            tile.wallSpriteCol -= 3
+            tile.ceilingSpriteCol -= 3
+            tile.ceilingSpriteRow -= 2
+          }
+          tile.ceilingSpriteRow += 5
+          tile.wallSpriteRow += 5
+        }
+
+        // Street Tiles
+        if (tileType === 'street-tile') {
+          const sTile = gameMap.tiles?.[row + 1]?.[col + 0]
+          const nTile = gameMap.tiles?.[row - 1]?.[col + 0]
+          const eTile = gameMap.tiles?.[row + 0]?.[col + 1]
+          const wTile = gameMap.tiles?.[row + 0]?.[col - 1]
+          const seTile = gameMap.tiles?.[row + 1]?.[col + 1]
+          const neTile = gameMap.tiles?.[row - 1]?.[col + 1]
+          const swTile = gameMap.tiles?.[row + 1]?.[col - 1]
+          const nwTile = gameMap.tiles?.[row - 1]?.[col - 1]
+
+          function isNeighbourDifferent (neigbourTile) {
+            return !!(['wall-tile', 'floor-tile'].includes(neigbourTile?._type))
+          }
+
+          if (isNeighbourDifferent(seTile) && !isNeighbourDifferent(sTile) && !isNeighbourDifferent(eTile)) {
+            tile.floorSpriteRow += 1
+            tile.floorSpriteCol += 1
+          }
+          else if (isNeighbourDifferent(neTile) && !isNeighbourDifferent(nTile) && !isNeighbourDifferent(eTile)) {
+            tile.floorSpriteRow -= 1
+            tile.floorSpriteCol += 1
+          }
+          else if (isNeighbourDifferent(swTile) && !isNeighbourDifferent(sTile) && !isNeighbourDifferent(wTile)) {
+            tile.floorSpriteRow += 1
+            tile.floorSpriteCol -= 1
+          }
+          else if (isNeighbourDifferent(nwTile) && !isNeighbourDifferent(nTile) && !isNeighbourDifferent(wTile)) {
+            tile.floorSpriteRow -= 1
+            tile.floorSpriteCol -= 1
+          }
+
+          else if (isNeighbourDifferent(sTile)) { tile.floorSpriteRow += 1 }
+          else if (isNeighbourDifferent(nTile)) { tile.floorSpriteRow -= 1 }
+          else if (isNeighbourDifferent(eTile)) { tile.floorSpriteCol += 1 }
+          else if (isNeighbourDifferent(wTile)) { tile.floorSpriteCol -= 1 }
+
+
+        }
+
+      }
+    }
+
   } catch (err) {
     console.error('prettifyMapTiles(): ', err)
     return false
