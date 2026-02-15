@@ -84,6 +84,7 @@ export default class CNY2026GameManager extends Rule {
         this.gameTimer = 0
         this.state = GAME_STATES.FINISHED
         saveHighScore(this.score)
+        this._app.rules.get('sound-manager').fadeOutMusic()
       }
 
     } else if (this.state === GAME_STATES.FINISHED) {
@@ -265,6 +266,13 @@ export default class CNY2026GameManager extends Rule {
   increaseScore () {
     if (this.state === GAME_STATES.ACTIVE) {
       this.score += SCORE_PER_PICKUP
+    }
+
+    const soundManager = this._app.rules.get('sound-manager')
+
+    // Start the Gong Xi Music once 
+    if (this.score === 100) {
+      soundManager.playGongXiMusic()
     }
   }
 }

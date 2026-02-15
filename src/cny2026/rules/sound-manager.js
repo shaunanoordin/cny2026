@@ -25,13 +25,24 @@ export default class SoundManager extends Rule {
       src: ['assets/sound-destination-reached.wav']
     })
 
-    this.toggleMute = this.toggleMute.bind(this)
-    document.getElementById('button-sound').addEventListener('click', this.toggleMute)
+    this.gongxi40bpmMusic = new Howl({
+      src: ['assets/gongxigongxi-v2-40bpm.mp3'],
+      loop: true,
+    })
+
+    this.gongxi60bpmMusic = new Howl({
+      src: ['assets/gongxigongxi-v2-60bpm.mp3'],
+      loop: true,
+    })
+
+    this.toggleSound = this.toggleSound.bind(this)
+    document.getElementById('button-sound').addEventListener('click', this.toggleSound)
     document.getElementById('button-sound').dataset.muted = (this.muted) ? 'true' : 'false'
   }
 
   deconstructor () {
-
+    this.gongxi40bpmMusic.stop()
+    this.gongxi60bpmMusic.stop()
 
   }
 
@@ -51,8 +62,26 @@ export default class SoundManager extends Rule {
     this.destinationReachedSound.play()
   }
 
-  toggleMute () {
+  playGongXiMusic () {
+    this.gongxi40bpmMusic.play()
+    this.gongxi40bpmMusic.fade(0, 0.5, 1000)
+  }
+
+  fadeInMusic () {
+    this.gongxi40bpmMusic.fade(0, 0.5, 1000)
+  }
+
+  fadeOutMusic () {
+    this.gongxi40bpmMusic.fade(0.5, 0, 1000)
+  }
+
+  toggleSound () {
     this.muted = !this.muted
     document.getElementById('button-sound').dataset.muted = (this.muted) ? 'true' : 'false'
+    if (this.muted) {
+      this.fadeOutMusic()
+    } else {
+      this.fadeInMusic()
+    }
   }
 }
