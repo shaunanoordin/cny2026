@@ -29,6 +29,7 @@ import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 
 import { saveHighScore } from '../misc/highScore.js'
+import howManyCarsToSpawn from '../misc/howManyCarsToSpawn.js'
 
 const SHUFFLE = 10
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
@@ -229,8 +230,8 @@ export default class CNY2026GameManager extends Rule {
     let spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
     spawnZones = GameAI.shuffleArray(spawnZones, SHUFFLE)
  
-    const NUMBER_OF_SPAWNS = 3
-    for (let i = 0 ; i < NUMBER_OF_SPAWNS && i < spawnZones.length ; i++) {
+    const carsToSpawn = howManyCarsToSpawn(this.score)
+    for (let i = 0 ; i < carsToSpawn && i < spawnZones.length ; i++) {
       spawnZones[i].spawnCar()
     }
   }
