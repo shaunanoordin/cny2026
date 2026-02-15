@@ -5,6 +5,7 @@ import PassengerSpawnZone from './entities/passenger-spawn-zone.js'
 
 import CNY2026GameManager from './rules/cny2026-game-manager.js'
 import CNY2026StartUp from './rules/cny2026-start-up.js'
+import PassengerGuidance from './rules/passenger-guidance.js'
 import PlayerBounds from './rules/player-bounds.js'
 import PlayerControls from './rules/player-controls.js'
 import SoundManager from './rules/sound-manager.js'
@@ -50,6 +51,7 @@ export default class CNY2026 extends Story {
     const app = this._app
     app.addRule(new CNY2026GameManager(app))
     app.addRule(new CNY2026StartUp(app))
+    app.addRule(new PassengerGuidance(app))
     app.addRule(new PlayerControls(app))
     app.addRule(new PlayerBounds(app))
     app.addRule(new SoundManager(app))

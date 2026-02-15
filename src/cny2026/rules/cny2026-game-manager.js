@@ -7,6 +7,8 @@ things interesting.
 Rules:
 - Timed Score Game: this game is about accumulating as high a score as possible
   in a limited time. 
+  - The game timer (in the Active state) only starts after the player has
+    delivered at least one Passenger.
 - States: the Game Manager starts the game in an 'active' state, then switches
   to a 'finished' state when time is up.
   - Active: player can move the Hero around, and passengers and cars will spawn.
@@ -29,6 +31,7 @@ import { GameAI } from '@avo/game-ai.js'
 import { FRAMES_PER_SECOND, LAYERS, TILE_SIZE } from '@avo/constants.js'
 
 import { saveHighScore } from '../misc/highScore.js'
+import howManyCarsToSpawn from '../misc/howManyCarsToSpawn.js'
 
 const SHUFFLE = 10
 const DEFAULT_TARGET_NUMBER_OF_PASSENGERS = 3
@@ -67,7 +70,8 @@ export default class CNY2026GameManager extends Rule {
       // - the spawn timer causes new passengers and new enemies to spawn at a
       //   regular rate.
 
-      this.gameTimer++
+      // Don't start the game timer until the player has delivered at least one passenger.
+      if (this.score > 0) { this.gameTimer++ }
       this.spawnTimer++
 
       if (this.spawnTimer >= TIME_TO_SPAWN) {
@@ -120,33 +124,56 @@ export default class CNY2026GameManager extends Rule {
     
     const X_OFFSET = TILE_SIZE * 1.5
     const Y_OFFSET = TILE_SIZE * -1.0
+    const MID_X = this._app.canvasWidth / 2
+    const MID_Y = this._app.canvasHeight / 2
     const LEFT = X_OFFSET
     const RIGHT = this._app.canvasWidth - X_OFFSET
     const TOP = -Y_OFFSET
     const BOTTOM = this._app.canvasHeight + Y_OFFSET
+    const CLOCK_RADIUS = 24
     c2d.font = '2em monospace'
     c2d.textBaseline = 'middle'
     c2d.lineWidth = 8
 
-    // Paint timer
-    const currentTime = ACTIVE_GAME_TIME - this.gameTimer
-    const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
-    const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
-    const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
-    const timeText = timeInSeconds + '.' + textInMilliseconds
-    c2d.textAlign = 'right'
-    c2d.strokeStyle = '#fff'
-    c2d.strokeText(timeText, RIGHT, BOTTOM)
-    c2d.fillStyle = '#c04040'
-    c2d.fillText(timeText, RIGHT, BOTTOM)
+    // The game timer (in Active mode) doesn't start until the player has
+    // delivered at least one passenger.
+    if (this.score > 0) {
+
+      // Paint clock
+      const gameTimeLeft = this.gameTimer / ACTIVE_GAME_TIME
+      c2d.fillStyle = 'hsl(30, 80%, 60%)'
+      c2d.strokeStyle = '#fff'
+      c2d.lineWidth = 2
+      c2d.beginPath()
+      c2d.lineTo(MID_X, TOP - CLOCK_RADIUS)
+      c2d.moveTo(MID_X, TOP)
+      c2d.arc(MID_X, TOP, CLOCK_RADIUS, -0.5 * Math.PI + gameTimeLeft * 2 * Math.PI, -0.5 * Math.PI)
+      c2d.lineTo(MID_X, TOP)
+      c2d.fill()
+      c2d.stroke()
+
+      // Paint timer
+      const currentTime = ACTIVE_GAME_TIME - this.gameTimer
+      const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
+      const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
+      const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
+      const textInSeconds = timeInSeconds.toString().padStart(3, ' ')
+      const timeText = `time⯈ ${timeInSeconds}.${textInMilliseconds}`
+      c2d.textAlign = 'left'
+      c2d.strokeStyle = '#fff'
+      c2d.strokeText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
+      c2d.fillStyle = 'hsl(30, 80%, 60%)'
+      c2d.fillText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
+    }
 
     // Paint score
     const score = this.score
-    c2d.textAlign = 'left'
+    const textScore = `${score} ⯇score`
+    c2d.textAlign = 'right'
     c2d.strokeStyle = '#fff'
-    c2d.strokeText(score, LEFT, BOTTOM)
+    c2d.strokeText(textScore, MID_X - CLOCK_RADIUS * 1.5, TOP)
     c2d.fillStyle = '#c04040'
-    c2d.fillText(score, LEFT, BOTTOM)
+    c2d.fillText(textScore, MID_X - CLOCK_RADIUS * 1.5, TOP)
   }
 
   /*
@@ -229,8 +256,8 @@ export default class CNY2026GameManager extends Rule {
     let spawnZones = app.entities.filter(entity => entity._type === 'car-spawn-zone')
     spawnZones = GameAI.shuffleArray(spawnZones, SHUFFLE)
  
-    const NUMBER_OF_SPAWNS = 3
-    for (let i = 0 ; i < NUMBER_OF_SPAWNS && i < spawnZones.length ; i++) {
+    const carsToSpawn = howManyCarsToSpawn(this.score)
+    for (let i = 0 ; i < carsToSpawn && i < spawnZones.length ; i++) {
       spawnZones[i].spawnCar()
     }
   }
