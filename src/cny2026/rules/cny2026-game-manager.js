@@ -133,9 +133,8 @@ export default class CNY2026GameManager extends Rule {
     c2d.lineWidth = 8
 
     // Paint clock
-    const currentTime = this.gameTimer
-    const gameTimeLeft = currentTime / ACTIVE_GAME_TIME
-    c2d.fillStyle = '#e04040'
+    const gameTimeLeft = this.gameTimer / ACTIVE_GAME_TIME
+    c2d.fillStyle = 'hsl(30, 80%, 60%)'
     c2d.strokeStyle = '#fff'
     c2d.lineWidth = 2
     c2d.beginPath()
@@ -147,23 +146,26 @@ export default class CNY2026GameManager extends Rule {
     c2d.stroke()
 
     // Paint timer
+    const currentTime = ACTIVE_GAME_TIME - this.gameTimer
     const timeInMilliseconds = Math.floor((currentTime % FRAMES_PER_SECOND) / FRAMES_PER_SECOND * 1000 )
     const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
     const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
-    const timeText = timeInSeconds + '.' + textInMilliseconds
-    c2d.textAlign = 'right'
+    const textInSeconds = timeInSeconds.toString().padStart(3, ' ')
+    const timeText = `time⯈ ${timeInSeconds}.${textInMilliseconds}`
+    c2d.textAlign = 'left'
     c2d.strokeStyle = '#fff'
-    c2d.strokeText(timeText, RIGHT, BOTTOM)
-    c2d.fillStyle = '#c04040'
-    c2d.fillText(timeText, RIGHT, BOTTOM)
+    c2d.strokeText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
+    c2d.fillStyle = 'hsl(30, 80%, 60%)'
+    c2d.fillText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
 
     // Paint score
     const score = this.score
-    c2d.textAlign = 'left'
+    const textScore = `${score} ⯇score`
+    c2d.textAlign = 'right'
     c2d.strokeStyle = '#fff'
-    c2d.strokeText(score, LEFT, BOTTOM)
+    c2d.strokeText(textScore, MID_X - CLOCK_RADIUS * 1.5, TOP)
     c2d.fillStyle = '#c04040'
-    c2d.fillText(score, LEFT, BOTTOM)
+    c2d.fillText(textScore, MID_X - CLOCK_RADIUS * 1.5, TOP)
   }
 
   /*
