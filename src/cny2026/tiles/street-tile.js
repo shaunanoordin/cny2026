@@ -10,8 +10,8 @@ export default class StreetTile extends Tile {
     this.solid = false
 
     this.spriteSheet = app.assets['map'].img
-    this.floorSpriteCol = 3
-    this.floorSpriteRow = 5
+    this.floorSpriteCol = 5
+    this.floorSpriteRow = 6
   }
 
   paint (layer = 0) {
