@@ -139,7 +139,6 @@ export default function prettifyMapTiles (gameMap) {
 
         // Street Tiles
         if (tileType === 'street-tile') {
-          console.log('+++ ', row, col)
           const sTile = gameMap.tiles?.[row + 1]?.[col + 0]
           const nTile = gameMap.tiles?.[row - 1]?.[col + 0]
           const eTile = gameMap.tiles?.[row + 0]?.[col + 1]
@@ -147,13 +146,30 @@ export default function prettifyMapTiles (gameMap) {
           const seTile = gameMap.tiles?.[row + 1]?.[col + 1]
           const neTile = gameMap.tiles?.[row - 1]?.[col + 1]
           const swTile = gameMap.tiles?.[row + 1]?.[col - 1]
-          const nwile = gameMap.tiles?.[row - 1]?.[col - 1]
+          const nwTile = gameMap.tiles?.[row - 1]?.[col - 1]
 
           function isNeighbourDifferent (neigbourTile) {
             return !!(['wall-tile', 'floor-tile'].includes(neigbourTile?._type))
           }
 
-          if (isNeighbourDifferent(sTile)) { tile.floorSpriteRow += 1 }
+          if (isNeighbourDifferent(seTile) && !isNeighbourDifferent(sTile) && !isNeighbourDifferent(eTile)) {
+            tile.floorSpriteRow += 1
+            tile.floorSpriteCol += 1
+          }
+          else if (isNeighbourDifferent(neTile) && !isNeighbourDifferent(nTile) && !isNeighbourDifferent(eTile)) {
+            tile.floorSpriteRow -= 1
+            tile.floorSpriteCol += 1
+          }
+          else if (isNeighbourDifferent(swTile) && !isNeighbourDifferent(sTile) && !isNeighbourDifferent(wTile)) {
+            tile.floorSpriteRow += 1
+            tile.floorSpriteCol -= 1
+          }
+          else if (isNeighbourDifferent(nwTile) && !isNeighbourDifferent(nTile) && !isNeighbourDifferent(wTile)) {
+            tile.floorSpriteRow -= 1
+            tile.floorSpriteCol -= 1
+          }
+
+          else if (isNeighbourDifferent(sTile)) { tile.floorSpriteRow += 1 }
           else if (isNeighbourDifferent(nTile)) { tile.floorSpriteRow -= 1 }
           else if (isNeighbourDifferent(eTile)) { tile.floorSpriteCol += 1 }
           else if (isNeighbourDifferent(wTile)) { tile.floorSpriteCol -= 1 }
