@@ -14,12 +14,35 @@ const MUSIC_STATES = {
 }
 
 const MAX_VOL = 0.5
+const CNY2026_HIGHSCORE_MUTED_KEY = 'cny2026.muted'
+
+function getMutedValueFromStorage () {
+  const storage = window?.localStorage
+  if (!storage) return
+
+  try {
+    const mutedValue = storage.getItem(CNY2026_HIGHSCORE_MUTED_KEY)
+    return mutedValue === 'true'
+  } catch (err) {}
+
+  return false
+}
+
+function setMutedValueToStorage (value) {
+  const storage = window?.localStorage
+  if (!storage) return
+
+  try {
+    const mutedValue = storage.setItem(CNY2026_HIGHSCORE_MUTED_KEY, !!value ? 'true' : 'false')
+  } catch (err) {}
+}
 
 export default class SoundManager extends Rule {
   constructor (app) {
     super(app)
     this._type = 'sound-manager'
-    this.muted = false
+    this.muted = getMutedValueFromStorage()
+    this.musicVolume = MAX_VOL
     this.musicState = MUSIC_STATES.INIT
 
     this.pickUpSound = new Howl({
@@ -57,6 +80,8 @@ export default class SoundManager extends Rule {
     this.startingMusicId = undefined
     this.escalationMusicId = undefined
     this.finishingMusicId = undefined
+
+    this.updateSoundState()
   }
 
   deconstructor () {
@@ -83,17 +108,17 @@ export default class SoundManager extends Rule {
   playStartingMusic () {
     if (this.musicState === MUSIC_STATES.INIT) {
       this.startingMusicId = this.gongxi40bpmMusic.play('loopingBody')
-      this.gongxi40bpmMusic.fade(0, MAX_VOL, 1000, this.startingMusicId)
+      this.gongxi40bpmMusic.fade(0, this.musicVolume, 1000, this.startingMusicId)
       this.musicState = MUSIC_STATES.STARTING_MUSIC
     }
   }
 
   playEscalationMusic () {
     if (this.musicState === MUSIC_STATES.STARTING_MUSIC) {
-      this.gongxi40bpmMusic.fade(MAX_VOL, 0, 2000)
+      this.gongxi40bpmMusic.fade(this.musicVolume, 0, 2000)
 
       this.escalationMusicId = this.williamTellOvertureMusic.play('escalation')
-      this.williamTellOvertureMusic.fade(0, MAX_VOL, 2000, this.escalationMusicId)
+      this.williamTellOvertureMusic.fade(0, this.musicVolume, 2000, this.escalationMusicId)
 
       this.musicState = MUSIC_STATES.ESCALATION_MUSIC
     }
@@ -101,10 +126,10 @@ export default class SoundManager extends Rule {
 
   playFinishingMusic () {
     if (this.musicState === MUSIC_STATES.ESCALATION_MUSIC) {
-      this.williamTellOvertureMusic.fade(MAX_VOL, 0, 1000, this.escalationMusicId)
+      this.williamTellOvertureMusic.fade(this.musicVolume, 0, 1000, this.escalationMusicId)
 
       this.finishingMusicId = this.williamTellOvertureMusic.play('finishing')
-      this.williamTellOvertureMusic.fade(0, MAX_VOL, 1000, this.finishingMusicId)
+      this.williamTellOvertureMusic.fade(0, this.musicVolume, 1000, this.finishingMusicId)
 
       this.musicState = MUSIC_STATES.FINISHING_MUSIC
 
@@ -116,27 +141,34 @@ export default class SoundManager extends Rule {
   fadeInMusic () {
     switch (this.musicState) {
       case MUSIC_STATES.STARTING_MUSIC:
-        this.gongxi40bpmMusic.fade(0, MAX_VOL, 1000)
+        this.gongxi40bpmMusic.fade(0, this.musicVolume, 1000)
         break
       case MUSIC_STATES.ESCALATION_MUSIC:
       case MUSIC_STATES.FINISHING_MUSIC:
-        this.williamTellOvertureMusic.fade(0, MAX_VOL, 1000)
+        this.williamTellOvertureMusic.fade(0, this.musicVolume, 1000)
         break
     }
     
   }
 
   fadeOutMusic () {
-    this.gongxi40bpmMusic.fade(MAX_VOL, 0, 1000)
-    this.williamTellOvertureMusic.fade(MAX_VOL, 0, 1000)
+    this.gongxi40bpmMusic.fade(this.musicVolume, 0, 1000)
+    this.williamTellOvertureMusic.fade(this.musicVolume, 0, 1000)
   }
 
   toggleSound () {
     this.muted = !this.muted
+    setMutedValueToStorage(this.muted)
+    this.updateSoundState()
+  }
+
+  updateSoundState () {
     document.getElementById('button-sound').dataset.muted = (this.muted) ? 'true' : 'false'
     if (this.muted) {
+      this.musicVolume = 0
       this.fadeOutMusic()
     } else {
+      this.musicVolume = MAX_VOL
       this.fadeInMusic()
     }
   }
