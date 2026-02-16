@@ -74,17 +74,25 @@ export default class CNY2026GameManager extends Rule {
       if (this.score > 0) { this.gameTimer++ }
       this.spawnTimer++
 
+      // Spawn Passengers and Cars every second.
       if (this.spawnTimer >= TIME_TO_SPAWN) {
         this.populatePassengers()
         this.populateCars()
         this.spawnTimer = 0
       }
 
+      // Is it time to escalate the music?
+      const MAX_DURATION_OF_ESCALATION_MUSIC = 52 * FRAMES_PER_SECOND
+      if (this.gameTimer === (ACTIVE_GAME_TIME - MAX_DURATION_OF_ESCALATION_MUSIC)) {
+        this._app.rules.get('sound-manager').playEscalationMusic()
+      }
+
+      // Is the game round over?
       if (this.gameTimer >= ACTIVE_GAME_TIME) {
         this.gameTimer = 0
         this.state = GAME_STATES.FINISHED
         saveHighScore(this.score)
-        this._app.rules.get('sound-manager').fadeOutMusic()
+        this._app.rules.get('sound-manager').playFinishingMusic()
       }
 
     } else if (this.state === GAME_STATES.FINISHED) {
@@ -100,6 +108,7 @@ export default class CNY2026GameManager extends Rule {
 
         if (this.gameTimer >= FINISHED_SCREEN_TIME) {
           this._app.setHomeMenu(true)
+          this._app.rules.get('sound-manager').fadeOutMusic()
         }
       }
     }
