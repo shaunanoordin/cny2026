@@ -283,7 +283,8 @@ export default class CNY2026GameManager extends Rule {
 
     const soundManager = this._app.rules.get('sound-manager')
 
-    // Start the Gong Xi Music once 
+    // Start the Gong Xi Music once player has delivered one passenger.
+    // This is also when the game timer starts.
     if (this.score === 100) {
       soundManager.playStartingMusic()
     }
