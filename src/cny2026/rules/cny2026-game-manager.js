@@ -145,7 +145,7 @@ export default class CNY2026GameManager extends Rule {
     const TOP = -Y_OFFSET
     const BOTTOM = this._app.canvasHeight + Y_OFFSET
     const CLOCK_RADIUS = 24
-    c2d.font = '2em Source Code Pro, monospace'
+    c2d.font = 'bold 2em Source Code Pro, monospace'
     c2d.textBaseline = 'middle'
     c2d.lineWidth = 8
 
@@ -228,7 +228,7 @@ export default class CNY2026GameManager extends Rule {
 
     // Paint text 2: score
     text = `Your score: ${this.score}`
-    c2d.font = `${(progress * 2 + 0.5).toFixed(2)}em Source Code Pro, monospace`
+    c2d.font = `bold ${(progress * 2 + 0.5).toFixed(2)}em Source Code Pro, monospace`
     c2d.textAlign = 'center'
     c2d.textBaseline = 'top'
     c2d.strokeStyle = '#fff'
