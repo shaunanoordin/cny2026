@@ -8,10 +8,10 @@ Determines how many cars to spawn every second.
  */
 
 export default function howManyCarsToSpawn (score = 0) {
-  if (score >= 2000) return 5
-  if (score >= 1500) return 4
-  if (score >= 1000) return 3
-  if (score >= 500) return 2
-  if (score >= 100) return 1
+  if (score >= 1500) return 5
+  if (score >= 1200) return 4
+  if (score >= 900) return 3
+  if (score >= 600) return 2
+  if (score >= 300) return 1
   return 0
 }
