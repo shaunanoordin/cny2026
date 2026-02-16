@@ -155,8 +155,11 @@ export default class SoundManager extends Rule {
     let currentVolume = this.gongxi40bpmMusic.volume() || 0
     this.gongxi40bpmMusic.fade(currentVolume, 0, 1000)
 
-    currentVolume = this.williamTellOvertureMusic.volume() || 0
-    this.williamTellOvertureMusic.fade(currentVolume, 0, 1000)
+    currentVolume = this.williamTellOvertureMusic.volume(undefined, this.escalationMusicId) || 0
+    this.williamTellOvertureMusic.fade(currentVolume, 0, 1000, this.escalationMusicId)
+
+    currentVolume = this.williamTellOvertureMusic.volume(undefined, this.finishingMusicId) || 0
+    this.williamTellOvertureMusic.fade(currentVolume, 0, 1000, this.finishingMusicId)
   }
 
   toggleSound () {
