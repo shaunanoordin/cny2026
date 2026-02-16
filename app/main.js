@@ -522,7 +522,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _avo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @avo */ \"./src/avo/index.js\");\n/* harmony import */ var _cny2026__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cny2026 */ \"./src/cny2026/index.js\");\n\n\nwindow.onload = function () {\n  window.avo = new _avo__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n    story: _cny2026__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n    width: 40 * 32,\n    height: 20 * 32\n  });\n};\n\n//# sourceURL=webpack://cny2026/./src/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _avo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @avo */ \"./src/avo/index.js\");\n/* harmony import */ var _cny2026__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cny2026 */ \"./src/cny2026/index.js\");\n\n\nwindow.onload = function init() {\n  window.avo = new _avo__WEBPACK_IMPORTED_MODULE_0__[\"default\"]({\n    story: _cny2026__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n    width: 40 * 32,\n    height: 20 * 32\n  });\n};\n\n//# sourceURL=webpack://cny2026/./src/main.js?");
 
 /***/ }),
 
