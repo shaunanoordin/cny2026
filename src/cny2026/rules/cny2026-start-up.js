@@ -97,7 +97,7 @@ export default class CNY2026StartUp extends Rule {
     const MID_X = app.canvasWidth / 2
     const MID_Y = app.canvasHeight / 2
     
-    c2d.font = 'bold 2em Source Code Pro'
+    c2d.font = 'bold 2em Source Code Pro, monospace'
     c2d.textAlign = 'center'
     c2d.textBaseline = 'middle'
     c2d.lineWidth = 8
@@ -115,7 +115,7 @@ export default class CNY2026StartUp extends Rule {
     const MID_X = app.canvasWidth / 2
     const MID_Y = app.canvasHeight / 2
 
-    c2d.font = 'bold 2em Source Code Pro'
+    c2d.font = 'bold 2em Source Code Pro, monospace'
     c2d.textAlign = 'center'
     c2d.textBaseline = 'middle'
     c2d.lineWidth = 8
