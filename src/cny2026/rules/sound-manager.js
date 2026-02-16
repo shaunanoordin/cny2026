@@ -28,6 +28,9 @@ export default class SoundManager extends Rule {
     this.gongxi40bpmMusic = new Howl({
       src: ['assets/gongxigongxi-v2-40bpm.mp3'],
       loop: true,
+      sprite: {
+        loopingBody: [0, 18000],
+      },
     })
 
     this.gongxi60bpmMusic = new Howl({
@@ -63,7 +66,7 @@ export default class SoundManager extends Rule {
   }
 
   playGongXiMusic () {
-    this.gongxi40bpmMusic.play()
+    this.gongxi40bpmMusic.play('loopingBody')
     this.gongxi40bpmMusic.fade(0, 0.5, 1000)
   }
 
