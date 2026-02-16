@@ -69,7 +69,7 @@ export default class SoundManager extends Rule {
       src: ['assets/william-tell-overture-finale.mp3'],
       sprite: {
         escalation: [0, 52000, true],
-        finishing: [52000, 63000, false],
+        finishing: [52000, 62000, false],
       },
     })
 
@@ -152,8 +152,11 @@ export default class SoundManager extends Rule {
   }
 
   fadeOutMusic () {
-    this.gongxi40bpmMusic.fade(this.musicVolume, 0, 1000)
-    this.williamTellOvertureMusic.fade(this.musicVolume, 0, 1000)
+    let currentVolume = this.gongxi40bpmMusic.volume() || 0
+    this.gongxi40bpmMusic.fade(currentVolume, 0, 1000)
+
+    currentVolume = this.williamTellOvertureMusic.volume() || 0
+    this.williamTellOvertureMusic.fade(currentVolume, 0, 1000)
   }
 
   toggleSound () {
