@@ -29,3 +29,12 @@ Starting the project:
 1. Install the project dependencies by running `npm install`
 2. Run `npm start` to start the server, or `npm run dev` to start the server in dev mode (i.e. source files will be watched and changes compiled dynamically.)
 3. Open `http://localhost:3000` on your web browser to view the app.
+
+## Additional Credits and Resources
+
+- "Gong Xi Gong Xi" by Chen Gexin:
+  - music sheet taken from https://enovativepiano.com/lessons/1530/view
+  - mp3 composed in https://onlinesequencer.net/
+- "William Tell Overture" by Gioachino Rossini:
+  - mp3 taken from https://commons.wikimedia.org/wiki/File:Guillaume_Tell_-_Overture_-_(Rossini,_Gioacchino)_by_Fritz_Reiner_(conductor).mp3 and edited down.
+  - original mp3 performed in 1958 by Chicago Symphony Orchestra, conducted by Fritz Reiner.

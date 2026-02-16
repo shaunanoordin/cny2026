@@ -40,6 +40,8 @@ const ACTIVE_GAME_TIME = 1.5 * 60 * FRAMES_PER_SECOND
 const FINISHED_SCREEN_ANIMATION_TIME = 0.5 * FRAMES_PER_SECOND
 const FINISHED_SCREEN_TIME = 10 * FRAMES_PER_SECOND
 const SCORE_PER_PICKUP = 100
+const MAX_DURATION_OF_ESCALATION_MUSIC = 50 * FRAMES_PER_SECOND
+const SCORE_THRESHOLD_FOR_ESCALATION_MUSIC = 300
 
 export const GAME_STATES = {
   STARTING_UP: 'init',  // Show startup screen. 
@@ -74,16 +76,27 @@ export default class CNY2026GameManager extends Rule {
       if (this.score > 0) { this.gameTimer++ }
       this.spawnTimer++
 
+      // Spawn Passengers and Cars every second.
       if (this.spawnTimer >= TIME_TO_SPAWN) {
         this.populatePassengers()
         this.populateCars()
         this.spawnTimer = 0
       }
 
+      // Is it time to escalate the music?
+      if (
+        this.gameTimer === (ACTIVE_GAME_TIME - MAX_DURATION_OF_ESCALATION_MUSIC)
+        && this.score >= SCORE_THRESHOLD_FOR_ESCALATION_MUSIC
+      ) {
+        this._app.rules.get('sound-manager').playEscalationMusic()
+      }
+
+      // Is the game round over?
       if (this.gameTimer >= ACTIVE_GAME_TIME) {
         this.gameTimer = 0
         this.state = GAME_STATES.FINISHED
         saveHighScore(this.score)
+        this._app.rules.get('sound-manager').playFinishingMusic()
       }
 
     } else if (this.state === GAME_STATES.FINISHED) {
@@ -99,6 +112,7 @@ export default class CNY2026GameManager extends Rule {
 
         if (this.gameTimer >= FINISHED_SCREEN_TIME) {
           this._app.setHomeMenu(true)
+          this._app.rules.get('sound-manager').fadeOutMusic()
         }
       }
     }
@@ -265,6 +279,14 @@ export default class CNY2026GameManager extends Rule {
   increaseScore () {
     if (this.state === GAME_STATES.ACTIVE) {
       this.score += SCORE_PER_PICKUP
+    }
+
+    const soundManager = this._app.rules.get('sound-manager')
+
+    // Start the Gong Xi Music once player has delivered one passenger.
+    // This is also when the game timer starts.
+    if (this.score === 100) {
+      soundManager.playStartingMusic()
     }
   }
 }
