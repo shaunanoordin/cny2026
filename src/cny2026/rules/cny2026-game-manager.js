@@ -272,7 +272,7 @@ export default class CNY2026GameManager extends Rule {
 
     // Start the Gong Xi Music once 
     if (this.score === 100) {
-      soundManager.playGongXiMusic()
+      soundManager.playStartingMusic()
     }
   }
 }

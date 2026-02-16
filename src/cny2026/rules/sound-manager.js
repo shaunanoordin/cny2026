@@ -3,7 +3,6 @@ Sound Manager Manager
 Plays sounds.
  */
 
-
 import Rule from '@avo/rule'
 import { Howl } from 'howler'
 
@@ -33,11 +32,6 @@ export default class SoundManager extends Rule {
       },
     })
 
-    this.gongxi60bpmMusic = new Howl({
-      src: ['assets/gongxigongxi-v2-60bpm.mp3'],
-      loop: true,
-    })
-
     this.toggleSound = this.toggleSound.bind(this)
     document.getElementById('button-sound').addEventListener('click', this.toggleSound)
     document.getElementById('button-sound').dataset.muted = (this.muted) ? 'true' : 'false'
@@ -65,7 +59,7 @@ export default class SoundManager extends Rule {
     this.destinationReachedSound.play()
   }
 
-  playGongXiMusic () {
+  playStartingMusic () {
     this.gongxi40bpmMusic.play('loopingBody')
     this.gongxi40bpmMusic.fade(0, 0.5, 1000)
   }
