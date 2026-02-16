@@ -147,7 +147,7 @@ export default class CNY2026GameManager extends Rule {
     const CLOCK_RADIUS = 24
     c2d.font = 'bold 2em Source Code Pro, monospace'
     c2d.textBaseline = 'middle'
-    c2d.lineWidth = 8
+    c2d.lineWidth = 4
 
     // The game timer (in Active mode) doesn't start until the player has
     // delivered at least one passenger.
@@ -172,9 +172,10 @@ export default class CNY2026GameManager extends Rule {
       const textInMilliseconds = timeInMilliseconds.toString().padStart(3, '0').slice(0, 2)
       const timeInSeconds = Math.floor(currentTime / FRAMES_PER_SECOND)
       const textInSeconds = timeInSeconds.toString().padStart(3, ' ')
-      const timeText = `time⯈ ${textInSeconds}.${textInMilliseconds}`
+      const timeText = `time ${textInSeconds}.${textInMilliseconds}`
       c2d.textAlign = 'left'
       c2d.strokeStyle = '#fff'
+      c2d.lineWidth = 4
       c2d.strokeText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
       c2d.fillStyle = 'hsl(30, 80%, 60%)'
       c2d.fillText(timeText, MID_X + CLOCK_RADIUS * 1.5, TOP)
@@ -182,7 +183,7 @@ export default class CNY2026GameManager extends Rule {
 
     // Paint score
     const score = this.score
-    const textScore = `${score} ⯇score`
+    const textScore = `${score} score`
     c2d.textAlign = 'right'
     c2d.strokeStyle = '#fff'
     c2d.strokeText(textScore, MID_X - CLOCK_RADIUS * 1.5, TOP)
